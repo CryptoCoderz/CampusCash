@@ -107,7 +107,7 @@ CampusCashGUI::CampusCashGUI(QWidget *parent):
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
     setObjectName("CampusCash");
-    setStyleSheet("#CampusCash { background-color: #ffffff; color: #614eb0;}");
+    setStyleSheet("#CampusCash { background-color: #ffffff; color: #03dac6;}");
 
     // Accept D&D of URIs
     setAcceptDrops(true);
@@ -230,11 +230,11 @@ CampusCashGUI::CampusCashGUI(QWidget *parent):
     statusBar()->addWidget(progressBar);
     statusBar()->addPermanentWidget(frameBlocks);
     statusBar()->setObjectName("statusBar");
-    statusBar()->setStyleSheet("#statusBar { color: #3098c6; background-color: #1d1f22; }");
+    statusBar()->setStyleSheet("#statusBar { color: #03dac6; background-color: #1d1f22; }"); // TODO: Change color 3098c6 -> 03dac6
 
     if (!fUseDarkTheme)
     {
-        statusBar()->setStyleSheet("#statusBar { color: #ffffff; background-color: #614eb0; }");
+        statusBar()->setStyleSheet("#statusBar { color: #ffffff; background-color: #fad745; }");
     }
 
     syncIconMovie = new QMovie(fUseDarkTheme ? ":/movies/update_spinner_black" : ":/movies/update_spinner", "mng", this);
@@ -456,12 +456,12 @@ void CampusCashGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolbar->setObjectName("tabs");
-    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; background-color: #121418;} QToolButton:hover { background-color: #2f1d4b; } QToolButton:checked { background-color: #2f1d4b } QToolButton:pressed { background-color: #2f1d4b; } #tabs { color: #ffffff; background-color: #121418; }");
+    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; background-color: #03dac6;} QToolButton:hover { background-color: #02c4b2; } QToolButton:checked { background-color: #02988a } QToolButton:pressed { background-color: #02ae9e; } #tabs { color: #ffffff; background-color: #03dac6; }");
     toolbar->setIconSize(QSize(24,24));
 
     if(!fUseDarkTheme)
     {
-        toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; } QToolButton:hover { background-color: #3098c6; } QToolButton:checked { background-color: #3bb2e7; } QToolButton:pressed { background-color: #25779c; } #tabs { color: #ffffff; background-color: #614eb0; }");
+        toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; } QToolButton:hover { background-color: #e1c13e; } QToolButton:checked { background-color: #af9630; } QToolButton:pressed { background-color: #c8ac37; } #tabs { color: #ffffff; background-color: #fad745; }");
     }
 
     QLabel* header = new QLabel();

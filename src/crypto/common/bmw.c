@@ -172,7 +172,7 @@ static const sph_u64 IV512[] = {
 #define expand1s(qf, mf, hf, i16) \
 	expand1s_(qf, mf, hf, i16, I16_ ## i16, M16_ ## i16)
 #define expand1s_(qf, mf, hf, i16, ix, iy) \
-	expand1s_inner LPAR (qf, mf, hf, i16, ix, iy) // added "(" before qf;
+	expand1s_inner LPAR qf, mf, hf, i16, ix, iy)
 
 #define expand2s_inner(qf, mf, hf, i16, \
 		i0, i1, i2, i3, i4, i5, i6, i7, i8, \
@@ -187,7 +187,7 @@ static const sph_u64 IV512[] = {
 #define expand2s(qf, mf, hf, i16) \
 	expand2s_(qf, mf, hf, i16, I16_ ## i16, M16_ ## i16)
 #define expand2s_(qf, mf, hf, i16, ix, iy) \
-	expand2s_inner LPAR (qf, mf, hf, i16, ix, iy) // added "(" before qf;
+	expand2s_inner LPAR qf, mf, hf, i16, ix, iy)
 
 #if SPH_64
 

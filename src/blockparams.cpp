@@ -489,10 +489,6 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
             nSubsidy = nBlockRewardReserve;
         }
     }
-
-    // Halving
-    nSubsidy >>= (nHeight / 500000); // Halves every 500,000 blocks
-
     // (a(1-r^n)) / 1 - r; n = term being observed; n =/= 0, n > 0 < nLastPoWBlock; a = initial 10% DevOps Fee; r = ratio to multiply terms against; Sum = Sum + i(0) = sum;
     // hardCap v2.1
     else if(pindexBest->nMoneySupply > MAX_SINGLE_TX)
@@ -500,6 +496,9 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
         LogPrint("MINEOUT", "GetProofOfWorkReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
         return nFees;
     }
+
+    // Halving
+    nSubsidy >>= (nHeight / 500000); // Halves every 500,000 blocks
 
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
     return nSubsidy + nFees;
@@ -510,8 +509,16 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 //
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-    int64_t nSubsidy = nBlockStandardReward;
-
+    int64_t nSubsidy = (.03 * nBlockStandardReward); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
+    if(pindexPrev->GetBlockTime() > 1593907200 && pindexPrev->GetBlockTime() < 1612310400){
+      nSubsidy = (.035 * nBlockStandardReward);
+    }else if(pindexPrev->GetBlockTime() > 1612310400 && pindexPrev->GetBlockTime() < 1643846400){
+      nSubsidy = (.04 * nBlockStandardReward);
+    }else if(pindexPrev->GetBlockTime() > 1643846400 && pindexPrev->GetBlockTime() < 1659484800){
+      nSubsidy = (.05 * nBlockStandardReward);
+    }else if(pindexPrev->GetBlockTime() > 1659484800){
+      nSubsidy = (.06 * nBlockStandardReward);
+    }
     if(pindexPrev->nHeight+1 > nReservePhaseStart) {
         if(pindexBest->nMoneySupply < (nBlockRewardReserve * 100)) {
             nSubsidy = nBlockRewardReserve;
@@ -535,81 +542,10 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 {
     // Define values
-    int64_t ret = 0;
-    int64_t swingSubsidy = 250 * COIN; // 250 CCASH ceiling
-    int64_t seesawHeight = nHeight;
-    int64_t seesawInterval = seesawHeight / 30;
-    int64_t seesawEpoch = seesawInterval / 15;
-    int64_t seesawRollover = 0;
-    int64_t seesawArcstart = 5;
-    int64_t seesawArc = 10;
-    int64_t seesawArcend = 15;
-    double retDouble = 0;
-    double seesawBase = 0;
-    double seesawIncrement = 0.1;
-    double seesawMidIncrmt = 0.5;
-    double seesawCeiling = 1;
-    // Set bottom of seesaw arc
-    seesawBase = seesawMidIncrmt;
-    LogPrint("creation", "GetMasternodePayment(): seesawEpoch=%lu\n", seesawEpoch);
-    // Adjust for arc epochs
-    if(seesawEpoch >= 1)
-    {
-        seesawRollover = seesawArcend * seesawEpoch;
-        LogPrint("creation", "GetMasternodePayment(): seesawRollover=%lu\n", seesawRollover);
-        seesawInterval =- seesawRollover;
-        LogPrint("creation", "GetMasternodePayment(): seesawInterval=%lu\n", seesawInterval);
-    }
-    else
-    {
-        LogPrint("creation", "GetMasternodePayment(): seesawRollover=%lu\n", seesawRollover);
-        LogPrint("creation", "GetMasternodePayment(): seesawInterval=%lu\n", seesawInterval);
-    }
-    // Seesaw downswing (first for logic order)
-    if(seesawInterval > seesawArc)
-    {
-        if(seesawInterval <= seesawArcend)
-        {
-            seesawBase = seesawCeiling - ((seesawIncrement * seesawInterval) - 1);
-            LogPrint("creation", "GetMasternodePayment(): seesawBase_1=%lu\n", seesawBase);
-            // Limit seesaw arc
-            if(seesawBase < seesawMidIncrmt)
-            {
-                seesawBase = seesawMidIncrmt;
-                LogPrint("creation", "GetMasternodePayment(): seesawBase_2=%lu\n", seesawBase);
-            }
-        }
-    }
-    // Seesaw upswing
-    else if(seesawInterval > seesawArcstart)
-    {
-        if(seesawInterval <= seesawArc)
-        {
-            seesawBase = seesawIncrement * seesawInterval;
-            LogPrint("creation", "GetMasternodePayment(): seesawBase_3=%lu\n", seesawBase);
-            // Limit seesaw arc
-            if(seesawBase > seesawCeiling)
-            {
-                seesawBase = seesawCeiling;
-                LogPrint("creation", "GetMasternodePayment(): seesawBase_4=%lu\n", seesawBase);
-            }
-        }
-    }
-    // Set calculated position of seesaw arc
-    retDouble = swingSubsidy * seesawBase;
-    // v1.1 payment subsidy patch
-    if(pindexBest->GetBlockTime() > 0)
-    {
-        if(pindexBest->GetBlockTime() > nPaymentUpdate_1) // Monday, May 20, 2019 12:00:00 AM
-        {
-            // set returned value to calculated value
-            ret = retDouble;
-            LogPrint("creation", "GetMasternodePayment(): Value=%lu\n\n", ret);
+    int64_t ret2 = 0;
+    ret2 = 42 * COIN; // 42 CCASH
 
-        }
-    }
-    // Return our seesaw arc value (reward in current position of arc)
-    return ret;
+    return ret2;
 }
 
 //
@@ -618,7 +554,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
 {
     int64_t ret2 = 0;
-    ret2 = 25 * COIN; // 25 CCASH per block = 10% of blocks.
+    ret2 = 28.5 * COIN; // 28.5 CCASH per block = 10% of blocks.
 
     return ret2;
 }
