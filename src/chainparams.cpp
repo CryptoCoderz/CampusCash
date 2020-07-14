@@ -106,7 +106,7 @@ public:
         strMNenginePoolDummyAddress = ""; // dUnVN6zz2apaoWkb5krGoBCwwo8ZD3axue devopsaddress is dHy3LZvqX5B2rAAoLiA7Y7rpvkLXKTkD18
         strDevOpsAddress = "dSCXLHTZJJqTej8ZRszZxbLrS6dDGVJhw7"; // dSCXLHTZJJqTej8ZRszZxbLrS6dDGVJhw7
         nEndPoWBlock = 15010;
-        nStartPoSBlock = 15000;
+        nStartPoSBlock = 1;
     }
 
     virtual const CBlock& GenesisBlock() const { return genesis; }

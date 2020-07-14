@@ -230,7 +230,7 @@ CampusCashGUI::CampusCashGUI(QWidget *parent):
     statusBar()->addWidget(progressBar);
     statusBar()->addPermanentWidget(frameBlocks);
     statusBar()->setObjectName("statusBar");
-    statusBar()->setStyleSheet("#statusBar { color: #03dac6; background-color: #1d1f22; }"); // TODO: Change color 3098c6 -> 03dac6
+    statusBar()->setStyleSheet("#statusBar { color: #02ae9e; background-color: #41454d; }"); // TODO: Change color 3098c6 -> 03dac6
 
     if (!fUseDarkTheme)
     {
@@ -456,7 +456,7 @@ void CampusCashGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolbar->setObjectName("tabs");
-    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; background-color: #03dac6;} QToolButton:hover { background-color: #02c4b2; } QToolButton:checked { background-color: #02988a } QToolButton:pressed { background-color: #02ae9e; } #tabs { color: #ffffff; background-color: #03dac6; }");
+    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-weight:bold; background-color: #41454d;} QToolButton:hover { background-color: #3a3e45; } QToolButton:checked { background-color: #2d3035 } QToolButton:pressed { background-color: #34373d; } #tabs { color: #ffffff; background-color: #41454d; }");
     toolbar->setIconSize(QSize(24,24));
 
     if(!fUseDarkTheme)
@@ -731,7 +731,7 @@ void CampusCashGUI::setNumBlocks(int count)
 
         progressBarLabel->setText(tr(clientModel->isImporting() ? "Importing blocks..." : "Synchronizing with network..."));
         progressBarLabel->setVisible(true);
-        progressBarLabel->setStyleSheet("QLabel { color: #ffffff; }");
+        progressBarLabel->setStyleSheet("QLabel { color: #ffffff; background-color: #41454d; }");
         progressBar->setFormat(tr("%1 behind").arg(timeBehindText));
         progressBar->setMaximum(totalSecs);
         progressBar->setValue(totalSecs - secs);
