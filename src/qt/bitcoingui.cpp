@@ -732,6 +732,9 @@ void CampusCashGUI::setNumBlocks(int count)
         progressBarLabel->setText(tr(clientModel->isImporting() ? "Importing blocks..." : "Synchronizing with network..."));
         progressBarLabel->setVisible(true);
         progressBarLabel->setStyleSheet("QLabel { color: #ffffff; background-color: #41454d; }");
+        if(!fUseDarkTheme){
+        progressBarLabel->setStyleSheet("QLabel { color: #ffffff; background-color: #fad745; }");
+        }
         progressBar->setFormat(tr("%1 behind").arg(timeBehindText));
         progressBar->setMaximum(totalSecs);
         progressBar->setValue(totalSecs - secs);
