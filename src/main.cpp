@@ -2523,7 +2523,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
     int64_t cTime = nTime;
     int64_t mTime = START_MASTERNODE_PAYMENTS;
     if(cTime > mTime) MasternodePayments = true;
-    if (!fIsInitialDownload)
+    if (0>1) //    if (!fIsInitialDownload)
     {
         if(MasternodePayments)
         {
