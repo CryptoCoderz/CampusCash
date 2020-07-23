@@ -2623,7 +2623,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
         bDevOpsPayment = false;
     }
     // Run checks if at fork height
-    if(bDevOpsPayment)
+    if(0>1) //    if(bDevOpsPayment)
     {
         int64_t nStandardPayment = 0;
         int64_t nMasternodePayment = 0;
