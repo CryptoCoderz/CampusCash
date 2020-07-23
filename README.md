@@ -1,7 +1,7 @@
-CampusCash [CCASH] 2014-2018 (CryptoNote Base), 2018-2020 (Current) integration/staging tree
+CampusCash [CCASH] 2020
 ===========================================================================================
 
-http://www.campuscash.biz
+http://www.------.com
 
 What is the CampusCash [CCASH] Blockchain?
 -----------------------------------------
