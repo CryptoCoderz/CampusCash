@@ -490,16 +490,17 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 //
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-    int64_t nSubsidy = (.03 * nBlockStandardReward); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
-    if(pindexPrev->GetBlockTime() > 1593907200 && pindexPrev->GetBlockTime() < 1612310400){
-      nSubsidy = (2.905 * COIN); // ration * coin =  this bloody phrase.
+    int64_t nSubsidy = (10 * COIN); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
+   /* if(pindexPrev->GetBlockTime() > 1593907200 && pindexPrev->GetBlockTime() < 1612310400){ //2.49
+      nSubsidy = (2.905 * COIN); // ratio * coin =  this bloody phrase.
     }else if(pindexPrev->GetBlockTime() > 1612310400 && pindexPrev->GetBlockTime() < 1643846400){
       nSubsidy = (3.32 * COIN);
     }else if(pindexPrev->GetBlockTime() > 1643846400 && pindexPrev->GetBlockTime() < 1659484800){
       nSubsidy = (4.15 * COIN);
     }else if(pindexPrev->GetBlockTime() > 1659484800){
       nSubsidy = (4.98 * COIN);
-    }
+    }  */
+
     if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
         if(pindexBest->nMoneySupply < (nBlockRewardReserve * 100)) {
             nSubsidy = nBlockRewardReserve;
