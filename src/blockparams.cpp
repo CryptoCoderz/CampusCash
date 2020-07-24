@@ -281,14 +281,14 @@ void VRX_ThreadCurve(const CBlockIndex* pindexLast, bool fProofOfStake)
 
     // Version 1.0
     //
-    int64_t nNow = nBestHeight; int64_t nThen = 1493596800; // Toggle skew system fork - Mon, 01 May 2017 00:00:00 GMT
+    int64_t nNow = nBestHeight; int64_t nThen = 10; // Toggle skew system fork - Mon, 01 May 2017 00:00:00 GMT
     if(nNow > nThen){if(prevPoW < prevPoS && !fProofOfStake){if((prevPoS-prevPoW) > 3) TerminalAverage /= 3;}
     else if(prevPoW > prevPoS && fProofOfStake){if((prevPoW-prevPoS) > 3) TerminalAverage /= 3;}
     if(TerminalAverage < 0.5) TerminalAverage = 0.5;} // limit skew to halving
 
     // Version 1.1 curve-patch
     //
-    if(pindexBest->GetBlockTime() > 1520198278) // ON Sunday, March 4, 2018 9:17:58 PM
+    if(0 > 1) // ON Sunday, March 4, 2018 9:17:58 PM
     {
         // Define time values
         blkTime = pindexLast->GetBlockTime();
@@ -343,25 +343,6 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
     if (pindexLast->nHeight < scanheight+124) {
         fDryRun = true;
         return; // can't index prevblock
-    }
-
-    // Reset difficulty for payments update
-    if(pindexLast->GetBlockTime() > 0)
-    {
-        if(pindexLast->GetBlockTime() > nPaymentUpdate_1) // ON Monday, May 20, 2019 12:00:00 AM
-        {
-            if(pindexLast->GetBlockTime() < nPaymentUpdate_1+480) {
-                fDryRun = true;
-                return; // diff reset
-            }
-        }
-        if(pindexLast->GetBlockTime() > nPaymentUpdate_2) // ON Tuesday, Jul 02, 2019 12:00:00 PM PDT
-        {
-            if(pindexLast->GetBlockTime() < nPaymentUpdate_2+480) {
-                fDryRun = true;
-                return; // diff reset
-            }
-        }
     }
 
     // Test Fork
@@ -519,7 +500,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }else if(pindexPrev->GetBlockTime() > 1659484800){
       nSubsidy = (.06 * nBlockStandardReward);
     }
-    if(pindexPrev->nHeight+1 > nReservePhaseStart) {
+    if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
         if(pindexBest->nMoneySupply < (nBlockRewardReserve * 100)) {
             nSubsidy = nBlockRewardReserve;
         }

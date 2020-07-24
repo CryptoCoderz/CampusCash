@@ -22,9 +22,9 @@ static const int64_t nBlockStandardReward = 83 * COIN;
 /** Block spacing preferred */
 static const int64_t BLOCK_SPACING = (1 * 60); // One Minute
 /** Block spacing minimum */
-static const int64_t BLOCK_SPACING_MIN = (2 / 60); // Half a minute (30sec)
+static const int64_t BLOCK_SPACING_MIN = (1 * 30); // Half a minute (30sec)
 /** Block spacing maximum */
-static const int64_t BLOCK_SPACING_MAX = (1 * 60) + 30; // One minute and a half (1.5min)
+static const int64_t BLOCK_SPACING_MAX = (1 * 90); // One minute and a half (1.5min)
 /** Desired block times/spacing */
 static const int64_t GetTargetSpacing = BLOCK_SPACING;
 /** MNengine collateral */
