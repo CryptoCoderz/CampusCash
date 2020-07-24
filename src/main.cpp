@@ -2523,7 +2523,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
     int64_t cTime = nTime;
     int64_t mTime = START_MASTERNODE_PAYMENTS;
     if(cTime > mTime) MasternodePayments = true;
-    if (!fIsInitialDownload)
+    if (0>1) //    if (!fIsInitialDownload)
     {
         if(MasternodePayments)
         {
@@ -2623,7 +2623,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
         bDevOpsPayment = false;
     }
     // Run checks if at fork height
-    if(bDevOpsPayment)
+    if(0>1) //    if(bDevOpsPayment)
     {
         int64_t nStandardPayment = 0;
         int64_t nMasternodePayment = 0;
@@ -2670,7 +2670,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
             nMasterNodeChecksEngageTime = nMasterNodeChecksDelayBaseTime + nMasterNodeChecksDelay;
         }
         // Devops Address Set and Updates
-        strVfyDevopsAddress = "dHy3LZvqX5B2rAAoLiA7Y7rpvkLXKTkD18"; // dHy3LZvqX5B2rAAoLiA7Y7rpvkLXKTkD18
+        strVfyDevopsAddress = "CcABDmWkcSZPw8rMtoobShVFuudhf1svZu"; // CVGQAbKX5MvmsSN4x1GeCNqNsxzkPJuWEW
         if(pindexBest->GetBlockTime() < nPaymentUpdate_2) { strVfyDevopsAddress = Params().DevOpsAddress(); }
         // Check PoW or PoS payments for current block
         for (unsigned int i=0; i < vtx[isProofOfStake].vout.size(); i++) {

@@ -1,7 +1,7 @@
-CampusCash [CCASH] 2014-2018 (CryptoNote Base), 2018-2020 (Current) integration/staging tree
+CampusCash [CCASH] 2020
 ===========================================================================================
 
-http://www.campuscash.biz
+http://www.------.com
 
 What is the CampusCash [CCASH] Blockchain?
 -----------------------------------------
@@ -47,8 +47,8 @@ General Specs
 
 	Block Spacing: 2 Minutes
 	Stake Minimum Age: 15 Confirmations (PoS-v3) | 30 Minutes (PoS-v2)
-	Port: 18092
-	RPC Port: 18094
+	Port: 19427
+	RPC Port: 18695
 
 
 BUILD LINUX
@@ -77,7 +77,7 @@ cd ~; wget http://download.oracle.com/berkeley-db/db-6.2.32.NC.tar.gz; tar zxf d
 
 ### GitHub pull (Source Download)
 ```
-cd ~; git clone https://github.com/CampusCashCCASH/CampusCash-2 CampusCash
+cd ~; git clone https://github.com/SaltineChips/CampusCash CampusCash
 ```
 
 ### Build CampusCash daemon
@@ -117,8 +117,8 @@ daemon=1
 testnet=0
 rpcuser=CCASHrpcuser
 rpcpassword=SomeCrazyVeryVerySecurePasswordHere
-rpcport=18094
-port=18092
+rpcport=18695
+port=19427
 rpcconnect=127.0.0.1
 rpcallowip=127.0.0.1
 CONFIG
