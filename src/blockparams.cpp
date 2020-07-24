@@ -525,7 +525,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 {
     // Define values
     int64_t ret2 = 0;
-    ret2 = 42 * COIN; // 42 CCASH
+    ret2 = 0 * COIN; // 42 CCASH
 
     return ret2;
 }
@@ -536,7 +536,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
 {
     int64_t ret2 = 0;
-    ret2 = 28.5 * COIN; // 28.5 CCASH per block = 10% of blocks.
+    ret2 = 0 * COIN; // 28.5 CCASH per block = 10% of blocks.
 
     return ret2;
 }
