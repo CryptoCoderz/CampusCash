@@ -470,7 +470,7 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 83 * COIN;
-    if(pindexBest->GetBlockTime() > 1596067200) {
+    if(pindexBest->GetBlockTime() > 1596024000) {
             nSubsidy = nBlockStandardReward;
     }
 
