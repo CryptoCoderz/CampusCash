@@ -470,7 +470,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
             nSubsidy = nBlockRewardReserve;
         }
     }
-    // (a(1-r^n)) / 1 - r; n = term being observed; n =/= 0, n > 0 < nLastPoWBlock; a = initial 10% DevOps Fee; r = ratio to multiply terms against; Sum = Sum + i(0) = sum;
+    // 30.21 = PoW Payments for regular miners
     // hardCap v2.1
     else if(pindexBest->nMoneySupply > MAX_SINGLE_TX)
     {
@@ -490,15 +490,15 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 //
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-    int64_t nSubsidy = (2.49 * COIN); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
-    if(pindexPrev->GetBlockTime() > 1593907200 && pindexPrev->GetBlockTime() < 1612310400){ //2.49
-      nSubsidy = (2.905 * COIN); // ratio * coin =  this bloody phrase.
-    }else if(pindexPrev->GetBlockTime() > 1612310400 && pindexPrev->GetBlockTime() < 1643846400){
-      nSubsidy = (3.32 * COIN);
-    }else if(pindexPrev->GetBlockTime() > 1643846400 && pindexPrev->GetBlockTime() < 1659484800){
-      nSubsidy = (4.15 * COIN);
-    }else if(pindexPrev->GetBlockTime() > 1659484800){
-      nSubsidy = (4.98 * COIN);
+    int64_t nSubsidy = (79.05 * COIN); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
+    if(pindexPrev->GetBlockTime() > 1596585600 && pindexPrev->GetBlockTime() < 1609804800){
+      nSubsidy = (80.475 * COIN); // (ratio * nBlockStandardReward) + 42 + 28.5
+    }else if(pindexPrev->GetBlockTime() > 1609804800 && pindexPrev->GetBlockTime() < 1625443200){
+      nSubsidy = (81.9 * COIN);
+    }else if(pindexPrev->GetBlockTime() > 1625443200 && pindexPrev->GetBlockTime() < 1641340800){
+      nSubsidy = (84.75 * COIN);
+    }else if(pindexPrev->GetBlockTime() > 1641340800){
+      nSubsidy = (87.6 * COIN);
     }
 
     if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
@@ -525,7 +525,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 {
     // Define values
     int64_t ret2 = 0;
-    ret2 = 0 * COIN; // 42 CCASH
+    ret2 = 42 * COIN; // 42 CCASH
 
     return ret2;
 }
@@ -536,7 +536,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
 int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
 {
     int64_t ret2 = 0;
-    ret2 = 0 * COIN; // 28.5 CCASH per block = 10% of blocks.
+    ret2 = 28.5 * COIN; // 8.3 CCASH per block = 10% of blocks.
 
     return ret2;
 }
