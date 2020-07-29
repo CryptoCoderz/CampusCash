@@ -104,7 +104,7 @@ public:
 
         nPoolMaxTransactions = 9;
         strMNenginePoolDummyAddress = "CcABDmWkcSZPw8rMtoobShVFuudhf1svZu"; // CVGQAbKX5MvmsSN4x1GeCNqNsxzkPJuWEW devopsaddress is dHy3LZvqX5B2rAAoLiA7Y7rpvkLXKTkD18
-        strDevOpsAddress = "CaKwWL6e84WeKGsqBPYPXckkgp6jUa2ARr"; // Cdh8n1QyZo4dMj66ArEndLdf8o18qU3qvy
+        strDevOpsAddress = "Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM"; // CaKwWL6e84WeKGsqBPYPXckkgp6jUa2ARr
         nEndPoWBlock = 15010;
         nStartPoSBlock = 1;
     }

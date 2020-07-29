@@ -396,12 +396,12 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
                     //
                     CBitcoinAddress devopaddress;
                     if (Params().NetworkID() == CChainParams::MAIN) {
-                        if(GetTime() < nPaymentUpdate_2) { devopaddress = CBitcoinAddress("CaKwWL6e84WeKGsqBPYPXckkgp6jUa2ARr"); } // TODO: Cdh8n1QyZo4dMj66ArEndLdf8o18qU3qvy
-                        else { devopaddress = CBitcoinAddress("CaKwWL6e84WeKGsqBPYPXckkgp6jUa2ARr"); } // Cdh8n1QyZo4dMj66ArEndLdf8o18qU3qvy
+                        if(GetTime() < nPaymentUpdate_2) { devopaddress = CBitcoinAddress("Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM"); } // TODO: Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM
+                        else { devopaddress = CBitcoinAddress("Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM"); } // Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM
                     } else if (Params().NetworkID() == CChainParams::TESTNET) {
-                        devopaddress = CBitcoinAddress("");
+                        devopaddress = CBitcoinAddress(""); // Input DevOps for Testnet
                     } else if (Params().NetworkID() == CChainParams::REGTEST) {
-                        devopaddress = CBitcoinAddress("");
+                        devopaddress = CBitcoinAddress(""); // input DevOps for Regnet
                     }
 
                     // verify address
