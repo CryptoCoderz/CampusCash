@@ -346,9 +346,11 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
     }
 
     if(pindexBest->GetBlockTime() > 1596024000) {
-        // Reset diff for fork (Rewards update)
-        fDryRun = true;
-        return;
+        if(pindexBest->GetBlockTime() < 1596304801) {
+          // Reset diff for fork (Rewards update)
+          fDryRun = true;
+          return;
+        }
     }
 
     // Test Fork
@@ -474,6 +476,10 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
             nSubsidy = nBlockStandardReward;
     }
 
+    if(pindexBest->GetBlockTime() < 1596304801) {
+      nSubsidy += 160 * COIN;
+    }
+
     if(nHeight > nReservePhaseStart) {
         if(pindexBest->nMoneySupply < (nBlockRewardReserve * 100)) {
             nSubsidy = nBlockRewardReserve;
@@ -511,16 +517,20 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     if(pindexBest->GetBlockTime() > 1596024000) {
-      nSubsidy = (79.05 * COIN); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
+      nSubsidy = (58.25 * COIN); // PoS Staking - pindexPrev is info from the last block, and -> means to get specific info from that block. Getblocktime is the epoch time of that block.
     if(pindexPrev->GetBlockTime() > 1596585600 && pindexPrev->GetBlockTime() < 1609804800){
-      nSubsidy = (80.475 * COIN); // (ratio * nBlockStandardReward) + 42 + 28.5
+      nSubsidy = (58.875 * COIN); // (ratio * nBlockStandardReward) + 42 + (.1 * nBlockStandardReward)
     }else if(pindexPrev->GetBlockTime() > 1609804800 && pindexPrev->GetBlockTime() < 1625443200){
-      nSubsidy = (81.9 * COIN);
+      nSubsidy = (59.5 * COIN);
     }else if(pindexPrev->GetBlockTime() > 1625443200 && pindexPrev->GetBlockTime() < 1641340800){
-      nSubsidy = (84.75 * COIN);
+      nSubsidy = (60.75 * COIN);
     }else if(pindexPrev->GetBlockTime() > 1641340800){
-      nSubsidy = (87.6 * COIN);
+      nSubsidy = (62 * COIN);
     }
+    }
+
+    if(pindexBest->GetBlockTime() < 1596304801) {
+      nSubsidy += 20.8 * COIN;
     }
 
     if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
@@ -561,7 +571,11 @@ int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
 {
     int64_t ret2 = 0;
     if(pindexBest->GetBlockTime() > 1596024000) {
-    ret2 = 28.5 * COIN; // 8.3 CCASH per block = 10% of blocks.
+    ret2 = 12.5 * COIN; // 12.5 CCASH per block = 10% of blocks.
+    }
+
+    if(pindexBest->GetBlockTime() < 1596304801) {
+      ret2 += 16 * COIN;
     }
 
     return ret2;
