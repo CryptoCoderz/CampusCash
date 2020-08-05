@@ -11,11 +11,13 @@
 /** Reserve Phase start block */ 
 static const int64_t nReservePhaseStart = 1;
 /** Masternode/Devops Payment Update 1 **/
-static const int64_t nPaymentUpdate_1 = 1558310400;
+static const int64_t nPaymentUpdate_1 = 1558310400;//TODO: Clean this up
 /** Masternode/Devops Payment Update 2 **/
-static const int64_t nPaymentUpdate_2 = 1562094000;
+static const int64_t nPaymentUpdate_2 = 1562094000;//TODO: Clean this up
 /** Masternode/Devops Payment Update 3 **/
-static const int64_t nPaymentUpdate_3 = 1562281200;
+static const int64_t nPaymentUpdate_3 = 1562281200;//TODO: Clean this up
+/** PoW enabled again **/
+static const int64_t nPoWToggle = 1596844820; // Saturday, August 8, 2020 12:00:20 AM (GMT)
 /** Velocity toggle block */
 static const int64_t VELOCITY_TOGGLE = 175; // Implementation of the Velocity system into the chain.
 /** Velocity retarget toggle block */

@@ -2607,7 +2607,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
         }
     }
     // Fork toggle for payment upgrade
-    if(pindexBest->GetBlockTime() > 0)
+    if(pindexBest->GetBlockTime() > 0) // Most recent fork time: 1596304800
     {
         if(pindexBest->GetBlockTime() > nPaymentUpdate_1) // Monday, May 20, 2019 12:00:00 AM
         {
@@ -2623,7 +2623,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
         bDevOpsPayment = false;
     }
     // Run checks if at fork height
-    if(0>1) //    if(bDevOpsPayment)
+    if(0>1) // bDevOpsPayment
     {
         int64_t nStandardPayment = 0;
         int64_t nMasternodePayment = 0;
@@ -2715,9 +2715,9 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                    } else {
                        LogPrintf("CheckBlock() : PoS Recipient devops address validity could not be verified\n");
                        // Skip check during transition to new DevOps
-                       if (pindexBest->GetBlockTime() < nPaymentUpdate_3) {
+                       if (pindexBest->GetBlockTime() < nPaymentUpdate_3) {//TODO: Clean this up
                            // Check legacy blocks for valid payment, only skip for Update_2
-                           if (pindexBest->GetBlockTime() < nPaymentUpdate_2) {
+                           if (pindexBest->GetBlockTime() < nPaymentUpdate_2) {//TODO: Clean this up
                                fBlockHasPayments = false;
                            }
                        } else {
@@ -2882,7 +2882,11 @@ bool CBlock::AcceptBlock()
 
     uint256 hashProof;
     if (IsProofOfWork() && nHeight > Params().EndPoWBlock()){
-        return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
+        if(GetBlockTime() > nPoWToggle){
+            if(nHeight > Params().EndPoWBlock_v2()){
+                return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
+            }
+        }
     } else {
         // PoW is checked in CheckBlock()
         if (IsProofOfWork())
