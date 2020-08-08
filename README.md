@@ -1,7 +1,7 @@
 CampusCash [CCASH] 2020
 ===========================================================================================
 
-http://www.------.com
+http://campuscash.org/
 
 What is the CampusCash [CCASH] Blockchain?
 -----------------------------------------
@@ -27,9 +27,6 @@ Ensuring Insane stays as secure and robust as possible the CryptoCoderz team hav
 ### Wish (bmw512) Proof-of-Work Algorithm
 Wish or bmw512 hashing algorithm is utilized for the Proof-of-Work function and also replaces much of the underlying codebase hashing functions as well that normally are SHA256. By doing so this codebase is able to be both exponentially lighter and more secure in comparison to reference implementations.
 
-### Echo512 Proof-of-Stake Algorithm
-DigitnalNote's proof of stake system utilizes Echo512 which is a super lightweight and secure hashing algorithm.
-
 Specifications and General info
 ------------------
 CampusCash uses 
@@ -45,7 +42,7 @@ CampusCash uses
 
 General Specs
 
-	Block Spacing: 2 Minutes
+	Block Spacing: 1 Minute +- 30 seconds
 	Stake Minimum Age: 15 Confirmations (PoS-v3) | 30 Minutes (PoS-v2)
 	Port: 19427
 	RPC Port: 18695
@@ -110,7 +107,7 @@ cd ~; cd ~/CampusCash; qmake -qt=qt5 USE_UPNP=-; make
 
 ### Create config file for daemon
 ```
-cd ~; sudo ufw allow 18092/tcp; sudo ufw allow 18094/tcp; sudo ufw allow 22/tcp; sudo mkdir ~/.CCASH; cat << "CONFIG" >> ~/.CCASH/CampusCash.conf
+cd ~; sudo ufw allow 19427/tcp; sudo ufw allow 18695/tcp; sudo ufw allow 22/tcp; sudo mkdir ~/.CCASH; cat << "CONFIG" >> ~/.CCASH/CampusCash.conf
 listen=1
 server=1
 daemon=1
@@ -153,7 +150,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/CampusCashCCASH/CampusCash-1) are created
+completely stable. [Tags](https://github.com/SaltineChips/CampusCash/Tags) are created
 regularly to indicate new official, stable release versions of CampusCash [CCASH].
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -162,7 +159,7 @@ The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/
 should be used to discuss complicated or controversial changes before working
 on a patch set.
 
-Developer Discord can be found at https://discord.gg/eSb7nEx.
+Developer Discord can be found at https://discord.gg/Jp2ujYH.
 
 Testing
 -------
