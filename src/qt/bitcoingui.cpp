@@ -107,7 +107,7 @@ CampusCashGUI::CampusCashGUI(QWidget *parent):
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
     setObjectName("CampusCash");
-    setStyleSheet("#CampusCash { background-color: #ffffff; color: #03dac6;}");
+    setStyleSheet("#CampusCash {background-image: url(:/images/qt) }");
 
     // Accept D&D of URIs
     setAcceptDrops(true);
