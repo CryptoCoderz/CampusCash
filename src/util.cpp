@@ -1220,15 +1220,34 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "rpcport=18695\n");
                fprintf(ConfFile, "rpcconnect=127.0.0.1\n");
                fprintf(ConfFile, "rpcallowip=127.0.0.1\n");
-               //fprintf(ConfFile, "addnode=157.230.107.144\n");
-               //TODO: investigate node: fprintf(ConfFile, "addnode=199.175.54.187\n");
-               /* fprintf(ConfFile, "addnode=157.230.107.144\n");
+               fprintf(ConfFile, "addnode=45.77.210.8:19427\n");
+               fprintf(ConfFile, "addnode=45.77.210.8\n");
+               fprintf(ConfFile, "addnode=45.77.210.234:19427\n");
+               fprintf(ConfFile, "addnode=45.77.210.234\n");
+               fprintf(ConfFile, "addnode=192.168.1.14:19427\n");
+               fprintf(ConfFile, "addnode=192.168.1.14\n");
+               fprintf(ConfFile, "addnode=104.238.156.128:19427\n");
+               fprintf(ConfFile, "addnode=104.238.156.128\n");
+               fprintf(ConfFile, "addnode=66.42.71.176:19427\n");
+               fprintf(ConfFile, "addnode=66.42.71.176\n");
+               fprintf(ConfFile, "addnode=110.109.107.71:19427\n");
+               fprintf(ConfFile, "addnode=110.109.107.71\n");
+               fprintf(ConfFile, "addnode=82.165.119.20:19427\n");
+               fprintf(ConfFile, "addnode=82.165.119.20\n");
+               fprintf(ConfFile, "addnode=82.165.115.26:19427\n");
+               fprintf(ConfFile, "addnode=82.165.115.26\n");
+               fprintf(ConfFile, "addnode=217.160.29.63:19427\n");
+               fprintf(ConfFile, "addnode=217.160.29.63\n");
+               fprintf(ConfFile, "addnode=138.197.161.183:19427\n");
                fprintf(ConfFile, "addnode=138.197.161.183\n");
-               fprintf(ConfFile, "addnode=seed1n.campuscash.biz\n");
-               fprintf(ConfFile, "addnode=seed2n.campuscash.biz\n");
-               fprintf(ConfFile, "addnode=seed3n.campuscash.biz\n");
-               fprintf(ConfFile, "addnode=seed4n.campuscash.biz\n"); */
-
+               fprintf(ConfFile, "addnode=157.230.107.144:19427\n");
+               fprintf(ConfFile, "addnode=157.230.107.144\n");
+               fprintf(ConfFile, "addnode=137.220.34.237:19427\n");
+               fprintf(ConfFile, "addnode=137.220.34.237\n");
+               fprintf(ConfFile, "addnode=184.166.67.221:19427\n");
+               fprintf(ConfFile, "addnode=184.166.67.221\n");
+               fprintf(ConfFile, "addnode=167.99.88.37:19427\n");
+               fprintf(ConfFile, "addnode=167.99.88.37\n");
                fclose(ConfFile);
     }
 

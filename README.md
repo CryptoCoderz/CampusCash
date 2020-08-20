@@ -118,6 +118,20 @@ rpcport=18695
 port=19427
 rpcconnect=127.0.0.1
 rpcallowip=127.0.0.1
+addnode=104.238.156.128:19427
+addnode=104.238.156.128
+addnode=66.42.71.176:19427
+addnode=66.42.71.176
+addnode=184.166.67.221:19427
+addnode=184.166.67.221
+addnode=138.197.161.183:19427
+addnode=138.197.161.183
+addnode=217.160.29.63:19427
+addnode=217.160.29.63
+addnode=82.165.119.20:19427
+addnode=82.165.119.20
+addnode=82.165.115.26:19427
+addnode=82.165.115.26
 CONFIG
 chmod 700 ~/.CCASH/CampusCash.conf; chmod 700 ~/.CCASH; ls -la ~/.CCASH
 ```
