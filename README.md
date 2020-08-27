@@ -8,21 +8,20 @@ What is the CampusCash [CCASH] Blockchain?
 *TODO: Update documentation regarding implemented tech as this section is out of date and much progress and upgrades have been made to mentioned sections...*
 
 ### Overview
-CampusCash is a blockchain project with the goal of offering secured messaging, Darksend, masternodes and an overall pleasing experience to the user.
+CampusCash is a blockchain project with the goal of creating a blockchain for the student, one where your degrees are stored on the blockchain and can be validated by employers by the pubkey that sent you the degree.
 
 ### Blockchain Technology
-The CampusCash [CCASH] Blockchain is an experimental smart contract platform protocol that enables 
+The CampusCash [CCASH] Blockchain is an experimental smart contract platform that enables 
 instant payments to anyone, anywhere in the world in a private, secure manner. 
-CampusCash [CCASH] uses peer-to-peer blockchain technology developed by CampusCash to operate
+CampusCash [CCASH] uses peer-to-peer blockchain technology developed by CryptoCoderz and SaltineChips to operate
 with no central authority: managing transactions, execution of contracts, and 
-issuing money are carried out collectively by the network. CampusCash [CCASH] is the name of 
-open source software which enables the use of this protocol.
+issuing money are carried out collectively by the network.
 
 ### Custom Difficulty Retarget Algorithm “VRX”
 VRX is designed from the ground up to integrate properly with the Velocity parameter enforcement system to ensure users no longer receive orphan blocks.
 
 ### Velocity Block Constraint System
-Ensuring Insane stays as secure and robust as possible the CryptoCoderz team have implemented what's known as the Velocity block constraint system. This system acts as third and final check for both mined and peer-accepted blocks ensuring that all parameters are strictly enforced.
+Ensuring CampusCash stays as secure and robust as possible, we have implemented what's known as the Velocity block constraint system (developed by CryptoCoderz & SaltineChips). This system acts as a third and final check for both mined and peer-accepted blocks, ensuring that all parameters are strictly enforced.
 
 ### Wish (bmw512) Proof-of-Work Algorithm
 Wish or bmw512 hashing algorithm is utilized for the Proof-of-Work function and also replaces much of the underlying codebase hashing functions as well that normally are SHA256. By doing so this codebase is able to be both exponentially lighter and more secure in comparison to reference implementations.
@@ -118,20 +117,34 @@ rpcport=18695
 port=19427
 rpcconnect=127.0.0.1
 rpcallowip=127.0.0.1
+addnode=45.77.210.8:19427
+addnode=45.77.210.8
+addnode=45.77.210.234:19427
+addnode=45.77.210.234
+addnode=192.168.1.14:19427
+addnode=192.168.1.14
 addnode=104.238.156.128:19427
 addnode=104.238.156.128
 addnode=66.42.71.176:19427
 addnode=66.42.71.176
-addnode=184.166.67.221:19427
-addnode=184.166.67.221
-addnode=138.197.161.183:19427
-addnode=138.197.161.183
-addnode=217.160.29.63:19427
-addnode=217.160.29.63
+addnode=110.109.107.71:19427
+addnode=110.109.107.71
 addnode=82.165.119.20:19427
 addnode=82.165.119.20
 addnode=82.165.115.26:19427
 addnode=82.165.115.26
+addnode=217.160.29.63:19427
+addnode=217.160.29.63
+addnode=138.197.161.183:19427
+addnode=138.197.161.183
+addnode=157.230.107.144:19427
+addnode=157.230.107.144
+addnode=137.220.34.237:19427
+addnode=137.220.34.237
+addnode=184.166.67.221: 19427
+addnode=184.166.67.221
+addnode=167.99.88.37:19427
+addnode=167.99.88.37
 CONFIG
 chmod 700 ~/.CCASH/CampusCash.conf; chmod 700 ~/.CCASH; ls -la ~/.CCASH
 ```
