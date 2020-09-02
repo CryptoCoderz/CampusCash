@@ -476,8 +476,8 @@ bool fMNtier2()
     CScript payee;
     CTxIn vin;
     //spork
-    if(masternodePayments.GetBlockPayee(pindexPrev->nHeight+1, payee, vin)){
-        LogPrintf("MasterNode Tier-2 Payment Toggle : Found relayed MasterNode winner!\n");
+    if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
+        LogPrintf("MasterNode Tier Payment Toggle : Found relayed MasterNode winner!\n");
         if(mnEngineSigner.IsVinTier2(vin)){
             LogPrintf("MasterNode Tier Found: Tier-2\n");
             return true;
@@ -487,7 +487,11 @@ bool fMNtier2()
             return false;
         }
     } else {
-        LogPrintf("MasterNode Tier-2 Payment Toggle : WARNING : Could not find relayed Masternode winner!\n");
+        if(!IsInitialBlockDownload()){
+            LogPrintf("MasterNode Tier Payment Toggle : WARNING : Could not find relayed Masternode winner!\n");
+        } else {
+            LogPrintf("MasterNode Tier Payment Toggle : Skipping during InitialBlockDownload");
+        }
         return false;
     }
     return false;

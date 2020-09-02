@@ -90,7 +90,7 @@ public:
     //
 
     uint64_t CalculateScore(uint256 blockHash, CTxIn& vin);
-    bool GetWinningMasternode(int nBlockHeight, CTxIn& vinOut);
+    bool GetWinningMasternode(int nBlockHeight, CScript& payee, CTxIn& vin);
     bool AddWinningMasternode(CMasternodePaymentWinner& winner);
     bool ProcessBlock(int nBlockHeight);
     void Relay(CMasternodePaymentWinner& winner);
@@ -98,8 +98,6 @@ public:
     void CleanPaymentList();
     int LastPayment(CMasternode& mn);
     int GetMinMasternodePaymentsProto();
-
-    bool GetBlockPayee(int nBlockHeight, CScript& payee, CTxIn& vin);
 };
 
 
