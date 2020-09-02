@@ -8,7 +8,6 @@
 #define BITCOIN_MINING_H
 
 #include "bignum.h"
-#include "wallet.h"
 
 /** Minimum nCoinAge required to stake PoS */
 static const unsigned int nStakeMinAge = 2 / 60; // 30 minutes
