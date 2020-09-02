@@ -421,7 +421,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
 
                     if(bMasterNodePayment) {
                         //spork
-                        if(masternodePayments.GetBlockPayee(pindexPrev->nHeight+1, mn_payee, vin)){
+                        if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, mn_payee, vin)){
                             LogPrintf("CreateNewBlock(): Found relayed Masternode winner!\n");
                         } else {
                             LogPrintf("CreateNewBlock(): WARNING: Could not find relayed Masternode winner!\n");

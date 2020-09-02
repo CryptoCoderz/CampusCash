@@ -144,24 +144,16 @@ uint64_t CMasternodePayments::CalculateScore(uint256 blockHash, CTxIn& vin)
     return n4.Get64();
 }
 
-bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payee, CTxIn& vin)
+bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CScript& payee, CTxIn& vin)
 {
-    BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        if(winner.nBlockHeight == nBlockHeight || winner.nBlockHeight == nBlockHeight-1 || winner.nBlockHeight == nBlockHeight+1) {
-            payee = winner.payee;
-            vin = winner.vin;
-            return true;
-        }
+    if(!IsInitialBlockDownload()){
+        ProcessBlock(nBlockHeight);
     }
 
-    return false;
-}
-
-bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vinOut)
-{
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        if(winner.nBlockHeight == nBlockHeight || winner.nBlockHeight == nBlockHeight-1 || winner.nBlockHeight == nBlockHeight+1) {
-            vinOut = winner.vin;
+        if(winner.nBlockHeight != 0) {
+            payee = winner.payee;
+            vin = winner.vin;
             return true;
         }
     }
@@ -228,8 +220,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 {
     LOCK(cs_masternodepayments);
 
-    if(nBlockHeight <= nLastBlockHeight) return false;
-    if(!enabled) return false;
+    if(nBlockHeight <= 10) return false;
+    //if(!enabled) return false;
     CMasternodePaymentWinner newWinner;
     int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
@@ -259,11 +251,11 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         newWinner.nBlockHeight = nBlockHeight;
         newWinner.vin = pmn->vin;
 
-        if(pmn->donationPercentage > 0 && (nHash % 100) <= (unsigned int)pmn->donationPercentage) {
-            newWinner.payee = pmn->donationAddress;
-        } else {
+        //if(pmn->donationPercentage > 0 && (nHash % 100) <= (unsigned int)pmn->donationPercentage) {
+        //    newWinner.payee = pmn->donationAddress;
+        //} else {
             newWinner.payee = GetScriptForDestination(pmn->pubkey.GetID());
-        }
+        //}
 
         payeeSource = GetScriptForDestination(pmn->pubkey.GetID());
     }

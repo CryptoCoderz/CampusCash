@@ -2544,7 +2544,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 
                     CScript payee;
                     CTxIn vin;
-                    if(!masternodePayments.GetBlockPayee(pindexBest->nHeight+1, payee, vin) || payee == CScript()){
+                    if(!masternodePayments.GetWinningMasternode(pindexBest->nHeight+1, payee, vin) || payee == CScript()){
                         foundPayee = true; //doesn't require a specific payee
                         foundPaymentAmount = true;
                         foundPaymentAndPayee = true;
@@ -3133,7 +3133,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         // If we're in LiteMode disable mnengine features without disabling masternodes
         if (!fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate()){
 
-            if(masternodePayments.GetBlockPayee(pindexBest->nHeight, payee, vin)){
+            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, payee, vin)){
                 //UPDATE MASTERNODE LAST PAID TIME
                 CMasternode* pmn = mnodeman.Find(vin);
                 if(pmn != NULL) {
@@ -3145,11 +3145,11 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 
             mnEnginePool.CheckTimeout();
             mnEnginePool.NewBlock();
-            masternodePayments.ProcessBlock(pindexBest->nHeight);
+            //masternodePayments.ProcessBlock(pindexBest->nHeight);
 
         } else if (fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate())
         {
-            if(masternodePayments.GetBlockPayee(pindexBest->nHeight, payee, vin)){
+            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, payee, vin)){
                 //UPDATE MASTERNODE LAST PAID TIME
                 CMasternode* pmn = mnodeman.Find(vin);
                 if(pmn != NULL) {
@@ -3159,7 +3159,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
                 LogPrintf("ProcessBlock() : Update Masternode Last Paid Time - %d\n", pindexBest->nHeight);
             }
 
-            masternodePayments.ProcessBlock(pindexBest->nHeight);
+            //masternodePayments.ProcessBlock(pindexBest->nHeight);
         }
 
     }

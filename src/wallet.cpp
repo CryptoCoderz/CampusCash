@@ -3097,7 +3097,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     bool hasPayment = true;
     if(bMasterNodePayment) {
         //spork
-        if(masternodePayments.GetBlockPayee(pindexPrev->nHeight+1, payee, vin)){
+        if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
             LogPrintf("CreateCoinStake : Found relayed MasterNode winner!\n");
         } else {
             LogPrintf("CreateCoinStake : WARNING : Could not find relayed Masternode winner!\n");
