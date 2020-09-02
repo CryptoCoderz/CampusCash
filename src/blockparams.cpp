@@ -17,6 +17,7 @@
 #include "main.h"
 #include "mnengine.h"
 #include "masternodeman.h"
+#include "masternode-payments.h"
 
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
@@ -467,13 +468,44 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 
 //
+// Masternode Tier 2 Payout Toggle
+//
+bool fMNtier2()
+{
+    // Set TX values
+    CScript payee;
+    CTxIn vin;
+    //spork
+    if(masternodePayments.GetBlockPayee(pindexPrev->nHeight+1, payee, vin)){
+        LogPrintf("MasterNode Tier-2 Payment Toggle : Found relayed MasterNode winner!\n");
+        if(mnEngineSigner.IsVinTier2(vin)){
+            LogPrintf("MasterNode Tier Found: Tier-2\n");
+            return true;
+        }
+        else {
+            LogPrintf("MasterNode Tier Found: Tier-1\n");
+            return false;
+        }
+    } else {
+        LogPrintf("MasterNode Tier-2 Payment Toggle : WARNING : Could not find relayed Masternode winner!\n");
+        return false;
+    }
+    return false;
+}
+
+//
 // PoW coin base reward
 //
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 83 * COIN;
+
     if(pindexBest->GetBlockTime() > 1596024000) {
             nSubsidy = nBlockStandardReward;
+    }
+
+    if(fMNtier2()) {
+        nSubsidy += 118 * COIN;
     }
 
     if(pindexBest->GetBlockTime() < 1596304801) {
@@ -485,6 +517,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
             nSubsidy = nBlockRewardReserve;
         }
     }
+
     // 30.21 = PoW Payments for regular miners
     // hardCap v2.1
     else if(pindexBest->nMoneySupply > MAX_SINGLE_TX)
@@ -533,6 +566,10 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
       nSubsidy += 20.8 * COIN;
     }
 
+    if(fMNtier2()) {
+        nSubsidy += 118 * COIN;
+    }
+
     if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
         if(pindexBest->nMoneySupply < (nBlockRewardReserve * 100)) {
             nSubsidy = nBlockRewardReserve;
@@ -558,7 +595,11 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
     // Define values
     int64_t ret2 = 0;
     if(pindexBest->GetBlockTime() > 1596024000) {
-    ret2 = 42 * COIN; // 42 CCASH
+        ret2 = 42 * COIN; // 42 CCASH
+
+        if(fMNtier2()) {
+            ret2 += 118 * COIN;
+        }
     }
 
     return ret2;

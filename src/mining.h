@@ -33,6 +33,8 @@ static const int64_t MNengine_COLLATERAL = (1 * COIN);
 static const int64_t MNengine_POOL_MAX = (999 * COIN);
 /** MasterNode required collateral */
 inline int64_t MasternodeCollateral(int nHeight) { return 250000; } // .25 Million CCASH required as collateral
+/** MasterNode required collateral */
+inline int64_t MasternodeCollateral_Tier_2(int nHeight) { return 1000000; } // 1 Million CCASH required as collateral (Tier 2)
 /** Coinbase transaction outputs can only be staked after this number of new blocks (network rule) */
 static const int nStakeMinConfirmations = 5;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */

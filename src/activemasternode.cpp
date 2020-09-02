@@ -442,6 +442,9 @@ vector<COutput> CActiveMasternode::SelectCoinsMasternode()
         if(out.tx->vout[out.i].nValue == MasternodeCollateral(pindexBest->nHeight)*COIN) { //exactly
         	filteredCoins.push_back(out);
         }
+        if(out.tx->vout[out.i].nValue == MasternodeCollateral_Tier_2(pindexBest->nHeight)*COIN) { //exactly
+            filteredCoins.push_back(out);
+        }
     }
     return filteredCoins;
 }
@@ -463,6 +466,9 @@ vector<COutput> CActiveMasternode::SelectCoinsMasternodeForPubKey(std::string co
     {
         if(out.tx->vout[out.i].scriptPubKey == scriptPubKey && out.tx->vout[out.i].nValue == MasternodeCollateral(pindexBest->nHeight)*COIN) { //exactly
         	filteredCoins.push_back(out);
+        }
+        if(out.tx->vout[out.i].scriptPubKey == scriptPubKey && out.tx->vout[out.i].nValue == MasternodeCollateral_Tier_2(pindexBest->nHeight)*COIN) { //exactly
+            filteredCoins.push_back(out);
         }
     }
     return filteredCoins;
