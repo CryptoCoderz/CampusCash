@@ -1030,6 +1030,24 @@ bool CMNengineSigner::IsVinAssociatedWithPubkey(CTxIn& vin, CPubKey& pubkey){
             if(out.nValue == MasternodeCollateral(pindexBest->nHeight)*COIN){
                 if(out.scriptPubKey == payee2) return true;
             }
+            if(out.nValue == MasternodeCollateral_Tier_2(pindexBest->nHeight)*COIN){
+                if(out.scriptPubKey == payee2) return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool CMNengineSigner::IsVinTier2(CTxIn& vin){
+    CTransaction txVin;
+    uint256 hash;
+    if(GetTransaction(vin.prevout.hash, txVin, hash)){
+        BOOST_FOREACH(CTxOut out, txVin.vout){
+            if(out.nValue == MasternodeCollateral_Tier_2(pindexBest->nHeight)*COIN){
+                // Is tier 2
+                return true;
+            }
         }
     }
 

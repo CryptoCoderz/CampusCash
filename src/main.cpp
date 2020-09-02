@@ -3145,7 +3145,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 
             mnEnginePool.CheckTimeout();
             mnEnginePool.NewBlock();
-            masternodePayments.ProcessBlock(GetHeight()+10);
+            masternodePayments.ProcessBlock(pindexBest->nHeight);
 
         } else if (fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate())
         {
@@ -3159,7 +3159,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
                 LogPrintf("ProcessBlock() : Update Masternode Last Paid Time - %d\n", pindexBest->nHeight);
             }
 
-            masternodePayments.ProcessBlock(GetHeight()+10);
+            masternodePayments.ProcessBlock(pindexBest->nHeight);
         }
 
     }

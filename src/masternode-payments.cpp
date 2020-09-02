@@ -147,7 +147,7 @@ uint64_t CMasternodePayments::CalculateScore(uint256 blockHash, CTxIn& vin)
 bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payee, CTxIn& vin)
 {
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        if(winner.nBlockHeight == nBlockHeight) {
+        if(winner.nBlockHeight == nBlockHeight || winner.nBlockHeight == nBlockHeight-1 || winner.nBlockHeight == nBlockHeight+1) {
             payee = winner.payee;
             vin = winner.vin;
             return true;
@@ -160,7 +160,7 @@ bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payee, CTxIn&
 bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vinOut)
 {
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        if(winner.nBlockHeight == nBlockHeight) {
+        if(winner.nBlockHeight == nBlockHeight || winner.nBlockHeight == nBlockHeight-1 || winner.nBlockHeight == nBlockHeight+1) {
             vinOut = winner.vin;
             return true;
         }
@@ -235,7 +235,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     CScript payeeSource;
 
     uint256 hash;
-    if(!GetBlockHash(hash, nBlockHeight-10)) return false;
+    if(!GetBlockHash(hash, nBlockHeight)) return false;
     unsigned int nHash;
     memcpy(&nHash, &hash, 2);
 
