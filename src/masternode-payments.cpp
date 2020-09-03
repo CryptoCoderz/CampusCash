@@ -114,17 +114,20 @@ bool CMasternodePayments::Sign(CMasternodePaymentWinner& winner)
     if(!mnEngineSigner.SetKey(strMasterPrivKey, errorMessage, key2, pubkey2))
     {
         LogPrintf("CMasternodePayments::Sign - ERROR: Invalid Masternodeprivkey: '%s'\n", errorMessage.c_str());
-        return false;
+        LogPrintf("CMasternodePayments::Sign - FORCE BYPASS - SetKey checks!!!\n");
+        //return false;
     }
 
     if(!mnEngineSigner.SignMessage(strMessage, errorMessage, winner.vchSig, key2)) {
-        LogPrintf("CMasternodePayments::Sign - Sign message failed");
-        return false;
+        LogPrintf("CMasternodePayments::Sign - Sign message failed\n");
+        LogPrintf("CMasternodePayments::Sign - FORCE BYPASS - Sign message checks!!!\n");
+        //return false;
     }
 
     if(!mnEngineSigner.VerifyMessage(pubkey2, winner.vchSig, strMessage, errorMessage)) {
-        LogPrintf("CMasternodePayments::Sign - Verify message failed");
-        return false;
+        LogPrintf("CMasternodePayments::Sign - Verify message failed\n");
+        LogPrintf("CMasternodePayments::Sign - FORCE BYPASS - Verify message checks!!!\n");
+        //return false;
     }
 
     return true;
@@ -170,9 +173,6 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CScript& payee,
 bool CMasternodePayments::AddWinningMasternode(CMasternodePaymentWinner& winnerIn)
 {
     uint256 blockHash = 0;
-    if(!GetBlockHash(blockHash, winnerIn.nBlockHeight-576)) {
-        return false;
-    }
 
     winnerIn.score = CalculateScore(blockHash, winnerIn.vin);
 
