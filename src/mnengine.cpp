@@ -1061,6 +1061,7 @@ bool CMNengineSigner::SetKey(std::string strSecret, std::string& errorMessage, C
     if (!fGood) {
         errorMessage = _("Invalid private key.");
         return false;
+        //LogPrintf("CMNengineSetKey(): WARNING - Sign message failed");
     }
 
     key = vchSecret.GetKey();

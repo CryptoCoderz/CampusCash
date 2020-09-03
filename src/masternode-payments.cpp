@@ -146,18 +146,24 @@ uint64_t CMasternodePayments::CalculateScore(uint256 blockHash, CTxIn& vin)
 
 bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CScript& payee, CTxIn& vin)
 {
-    if(!IsInitialBlockDownload()){
-        ProcessBlock(nBlockHeight);
+    // Try to get frist masternode in our list
+    CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+    // If initial sync or we can't find a masternode in our list
+    if(IsInitialBlockDownload() || !winningNode){
+        // Return false (for sanity, we have no masternode to pay)
+        return false;
     }
-
+    // Fetch and relay masternode winners
+    ProcessBlock(nBlockHeight);
+    // Set masternode winner to pay
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        if(winner.nBlockHeight != 0) {
+        if(!IsInitialBlockDownload()) {
             payee = winner.payee;
             vin = winner.vin;
             return true;
         }
     }
-
+    // Should never get here
     return false;
 }
 
@@ -220,8 +226,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 {
     LOCK(cs_masternodepayments);
 
-    if(nBlockHeight <= 10) return false;
-    //if(!enabled) return false;
+    if(nBlockHeight <= 10) return false;//Superficial, checked in "GetWinningMasternode"
+    if(IsInitialBlockDownload()) return false;//Superficial, checked in "GetWinningMasternode"
     CMasternodePaymentWinner newWinner;
     int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
