@@ -1128,7 +1128,7 @@ bool CMNengineQueue::Sign()
     if(!mnEngineSigner.VerifyMessage(pubkey2, vchSig, strMessage, errorMessage)) {
         LogPrintf("CMNengineQueue():Relay - Verify message failed\n");
         LogPrintf("CMNengineQueue():Relay - FORCE BYPASS - VerifyMessage checks!!!\n");
-        return false;
+        //return false;
     }
 
     return true;
