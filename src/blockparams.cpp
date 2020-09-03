@@ -472,6 +472,13 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 bool fMNtier2()
 {
+    // Try to get frist masternode in our list
+    CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+    // If initial sync or we can't find a masternode in our list
+    if(IsInitialBlockDownload() || !winningNode){
+        // Return false (for sanity, we have no masternode to pay)
+        return false;
+    }
     // Set TX values
     CScript payee;
     CTxIn vin;

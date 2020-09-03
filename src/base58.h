@@ -153,8 +153,8 @@ public:
     CCampusCashExtKeyBase() {}
 };
 
-typedef CCampusCashExtKeyBase<CExtKey, 74, CChainParams::EXT_SECRET_KEY> CCampusCashExtKey;
-typedef CCampusCashExtKeyBase<CExtPubKey, 74, CChainParams::EXT_PUBLIC_KEY> CCampusCashExtPubKey;
+typedef CCampusCashExtKeyBase<CExtKey, 32, CChainParams::EXT_SECRET_KEY> CCampusCashExtKey;
+typedef CCampusCashExtKeyBase<CExtPubKey, 20, CChainParams::EXT_PUBLIC_KEY> CCampusCashExtPubKey;
 
 /** base58-encoded Bitcoin addresses.
  * Public-key-hash-addresses have version 0 (or 111 testnet).

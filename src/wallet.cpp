@@ -3096,11 +3096,19 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     bool hasPayment = true;
     if(bMasterNodePayment) {
-        //spork
-        if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
-            LogPrintf("CreateCoinStake : Found relayed MasterNode winner!\n");
+        // Try to get frist masternode in our list
+        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+        // If initial sync or we can't find a masternode in our list
+        if(winningNode){
+            //spork
+            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
+                LogPrintf("CreateCoinStake : Found relayed MasterNode winner!\n");
+            } else {
+                LogPrintf("CreateCoinStake : WARNING : Could not find relayed Masternode winner!\n");
+                payee = GetScriptForDestination(devopaddress.Get());
+            }
         } else {
-            LogPrintf("CreateCoinStake : WARNING : Could not find relayed Masternode winner!\n");
+            LogPrintf("CreateCoinStake : WARNING : No MasterNodes online to pay!\n");
             payee = GetScriptForDestination(devopaddress.Get());
         }
     } else {

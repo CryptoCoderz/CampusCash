@@ -420,11 +420,19 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
                     }
 
                     if(bMasterNodePayment) {
-                        //spork
-                        if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, mn_payee, vin)){
-                            LogPrintf("CreateNewBlock(): Found relayed Masternode winner!\n");
+                        // Try to get frist masternode in our list
+                        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+                        // If initial sync or we can't find a masternode in our list
+                        if(winningNode){
+                            //spork
+                            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, mn_payee, vin)){
+                                LogPrintf("CreateNewBlock(): Found relayed Masternode winner!\n");
+                            } else {
+                                LogPrintf("CreateNewBlock(): WARNING: Could not find relayed Masternode winner!\n");
+                                mn_payee = do_payee;
+                            }
                         } else {
-                            LogPrintf("CreateNewBlock(): WARNING: Could not find relayed Masternode winner!\n");
+                            LogPrintf("CreateNewBlock(): WARNING: No MasterNodes online to pay!\n");
                             mn_payee = do_payee;
                         }
                     } else {
