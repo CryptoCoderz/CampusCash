@@ -310,9 +310,13 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
     if(Sign(newWinner))
     {
+        LogPrintf("Signed winning masternode. \n");
         if(AddWinningMasternode(newWinner))
         {
+            LogPrintf("Added winning masternode. \n");
+
             Relay(newWinner);
+
             nLastBlockHeight = nBlockHeight;
             return true;
         }
@@ -325,6 +329,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 void CMasternodePayments::Relay(CMasternodePaymentWinner& winner)
 {
     CInv inv(MSG_MASTERNODE_WINNER, winner.GetHash());
+
+    LogPrintf("Relayed winning masternode. \n");
 
     vector<CInv> vInv;
     vInv.push_back(inv);
