@@ -472,12 +472,12 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 bool fMNtier2()
 {
-    return false;
     // Try to get frist masternode in our list
     CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
     // If initial sync or we can't find a masternode in our list
     if(IsInitialBlockDownload() || !winningNode){
         // Return false (for sanity, we have no masternode to pay)
+        LogPrintf("MasterNode Tier Payment Toggle : Either still syncing or no masternodes found\n");
         return false;
     }
     // Set TX values
@@ -498,7 +498,7 @@ bool fMNtier2()
         if(!IsInitialBlockDownload()){
             LogPrintf("MasterNode Tier Payment Toggle : WARNING : Could not find relayed Masternode winner!\n");
         } else {
-            LogPrintf("MasterNode Tier Payment Toggle : Skipping during InitialBlockDownload");
+            LogPrintf("MasterNode Tier Payment Toggle : Skipping during InitialBlockDownload\n");
         }
         return false;
     }
