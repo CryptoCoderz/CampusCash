@@ -71,6 +71,11 @@ void ProcessMessageMasternodePayments(CNode* pfrom, std::string& strCommand, CDa
             return;
         }
 
+        if(pfrom->nVersion < MIN_MASTERNODE_BSC_RELAY){
+            LogPrintf("mnw - WARNING - Skipping winner relay, peer: %d is unable to handle such requests!\n", pfrom->nVersion);
+            return;
+        }
+
         LogPrintf("mnw - winning vote - Vin %s Addr %s Height %d bestHeight %d\n", winner.vin.ToString().c_str(), address2.ToString().c_str(), winner.nBlockHeight, pindexBest->nHeight);
 
         if(!masternodePayments.CheckSignature(winner)){
@@ -305,6 +310,11 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     CTxDestination address3;
     ExtractDestination(payeeSource, address3);
     CCampusCashAddress address4(address3);
+
+    if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY){
+        LogPrintf("Masternode-Payments::ProcessBlock - WARNING - Skipping winner relay, peer: %d is unable to handle such requests!\n", pmn->protocolVersion);
+        return false;
+    }
 
     LogPrintf("Winner payee %s nHeight %d vin source %s. \n", address2.ToString().c_str(), newWinner.nBlockHeight, address4.ToString().c_str());
 

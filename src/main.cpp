@@ -3125,7 +3125,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         mapOrphanBlocksByPrev.erase(hashPrev);
     }
 
-    if(0 > 2){
+    if(!IsInitialBlockDownload()){
 
         CScript payee;
         CTxIn vin;
@@ -3145,7 +3145,6 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 
             mnEnginePool.CheckTimeout();
             mnEnginePool.NewBlock();
-            //masternodePayments.ProcessBlock(pindexBest->nHeight);
 
         } else if (fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate())
         {
@@ -3158,10 +3157,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 
                 LogPrintf("ProcessBlock() : Update Masternode Last Paid Time - %d\n", pindexBest->nHeight);
             }
-
-            //masternodePayments.ProcessBlock(pindexBest->nHeight);
         }
-
     }
 
     LogPrintf("ProcessBlock: ACCEPTED\n");
@@ -4418,8 +4414,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (fSecMsgEnabled) {
             SecureMsgReceiveData(pfrom, strCommand, vRecv);
         }
-        //mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
-        //ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
+        mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
+        ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
         ProcessMessageInstantX(pfrom, strCommand, vRecv);
         ProcessSpork(pfrom, strCommand, vRecv);
         // Ignore unknown commands for extensibility
