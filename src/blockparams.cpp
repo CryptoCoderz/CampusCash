@@ -472,6 +472,7 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 bool fMNtier2()
 {
+    return false;
     // Try to get frist masternode in our list
     CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
     // If initial sync or we can't find a masternode in our list

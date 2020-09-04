@@ -3125,7 +3125,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         mapOrphanBlocksByPrev.erase(hashPrev);
     }
 
-    if(!IsInitialBlockDownload()){
+    if(0 > 2){
 
         CScript payee;
         CTxIn vin;
@@ -4418,8 +4418,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (fSecMsgEnabled) {
             SecureMsgReceiveData(pfrom, strCommand, vRecv);
         }
-        mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
-        ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
+        //mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
+        //ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
         ProcessMessageInstantX(pfrom, strCommand, vRecv);
         ProcessSpork(pfrom, strCommand, vRecv);
         // Ignore unknown commands for extensibility
