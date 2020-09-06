@@ -3125,7 +3125,10 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         mapOrphanBlocksByPrev.erase(hashPrev);
     }
 
-    if(!IsInitialBlockDownload()){
+    // Try to get frist masternode in our list
+    CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+    // If initial sync or we can't find a masternode in our list
+    if(!IsInitialBlockDownload() || winningNode){
 
         CScript payee;
         CTxIn vin;
@@ -4414,10 +4417,12 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (fSecMsgEnabled) {
             SecureMsgReceiveData(pfrom, strCommand, vRecv);
         }
-        mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
-        ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
-        ProcessMessageInstantX(pfrom, strCommand, vRecv);
-        ProcessSpork(pfrom, strCommand, vRecv);
+        if (pfrom->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
+            mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
+            ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
+            ProcessMessageInstantX(pfrom, strCommand, vRecv);
+            ProcessSpork(pfrom, strCommand, vRecv);
+        }
         // Ignore unknown commands for extensibility
     }
 
