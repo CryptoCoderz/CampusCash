@@ -242,6 +242,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     unsigned int nHash;
     memcpy(&nHash, &hash, 2);
 
+    bool fNodeisCapable;
+
     LogPrintf(" ProcessBlock Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString().c_str());
 
     std::vector<CTxIn> vecLastPayments;
@@ -274,6 +276,20 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     //if we can't find new MN to get paid, pick first active MN counting back from the end of vecLastPayments list
     if(newWinner.nBlockHeight == 0 && nMinimumAge > 0)
     {
+        LOCK(cs_vNodes);
+        BOOST_FOREACH(CNode* pnode, vNodes){
+            if(pnode->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
+                LogPrintf(" Capable peers found (Masternode relay) \n");
+                fNodeisCapable = true;
+            } else {
+                LogPrintf(" Cannot relay with peers (Masternode relay) \n");
+                fNodeisCapable = false;
+                break;
+            }
+        }
+
+        if(!fNodeisCapable) return false;
+
         LogPrintf(" Find by reverse \n");
 
         BOOST_REVERSE_FOREACH(CTxIn& vinLP, vecLastPayments)
@@ -281,6 +297,10 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
             CMasternode* pmn = mnodeman.Find(vinLP);
             if(pmn != NULL)
             {
+                if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY) {
+                    fNodeisCapable = false;
+                    break;
+                }
                 pmn->Check();
                 if(!pmn->IsEnabled()) continue;
 
@@ -300,6 +320,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
             }
         }
     }
+
+    if(!fNodeisCapable) return false;
 
     if(newWinner.nBlockHeight == 0) return false;
 
