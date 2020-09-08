@@ -250,7 +250,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
     if(nBlockHeight <= 10) return false;//Superficial, checked in "GetWinningMasternode"
     if(IsInitialBlockDownload()) return false;//Superficial, checked in "GetWinningMasternode"
-    if(!NodeisCapable()) { LogPrintf("Masternode-Payments::ProcessBlock - SKIPPING - Capability issue, peer is unable to handle such requests!\n"); }
+    if(!NodeisCapable()) { LogPrintf("Masternode-Payments::ProcessBlock - SKIPPING - Capability issue, peer is unable to handle such requests!\n"); return false; }
     CMasternodePaymentWinner newWinner;
     int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
