@@ -227,12 +227,30 @@ void CMasternodePayments::CleanPaymentList()
     }
 }
 
+bool CMasternodePayments::NodeisCapable()
+{
+    bool fNodeisCapable;
+    LOCK(cs_vNodes);
+    BOOST_FOREACH(CNode* pnode, vNodes){
+        if(pnode->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
+            LogPrintf(" NodeisCapable() - Capable peers found (Masternode relay) \n");
+            fNodeisCapable = true;
+        } else {
+            LogPrintf(" NodeisCapable() - Cannot relay with peers (Masternode relay) \n");
+            fNodeisCapable = false;
+            break;
+        }
+    }
+    return fNodeisCapable;
+}
+
 bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 {
     LOCK(cs_masternodepayments);
 
     if(nBlockHeight <= 10) return false;//Superficial, checked in "GetWinningMasternode"
     if(IsInitialBlockDownload()) return false;//Superficial, checked in "GetWinningMasternode"
+    if(!NodeisCapable()) { LogPrintf("Masternode-Payments::ProcessBlock - SKIPPING - Capability issue, peer is unable to handle such requests!\n"); }
     CMasternodePaymentWinner newWinner;
     int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
@@ -242,9 +260,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     unsigned int nHash;
     memcpy(&nHash, &hash, 2);
 
-    bool fNodeisCapable;
-
-    LogPrintf(" ProcessBlock Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString().c_str());
+    LogPrintf(" Masternode-Payments::ProcessBlock - Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString().c_str());
 
     std::vector<CTxIn> vecLastPayments;
     BOOST_REVERSE_FOREACH(CMasternodePaymentWinner& winner, vWinning)
@@ -256,6 +272,12 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
     // pay to the oldest MN that still had no payment but its input is old enough and it was active long enough
     CMasternode *pmn = mnodeman.FindOldestNotInVec(vecLastPayments, nMinimumAge);
+
+    if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY) {
+        LogPrintf("Masternode-Payments::ProcessBlock - SKIPPING - Capability issue, masternode: %d is unable to handle such requests!\n", pmn->protocolVersion);
+        return false;
+    }
+
     if(pmn != NULL)
     {
         LogPrintf(" Found by FindOldestNotInVec \n");
@@ -264,32 +286,13 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         newWinner.nBlockHeight = nBlockHeight;
         newWinner.vin = pmn->vin;
 
-        //if(pmn->donationPercentage > 0 && (nHash % 100) <= (unsigned int)pmn->donationPercentage) {
-        //    newWinner.payee = pmn->donationAddress;
-        //} else {
-            newWinner.payee = GetScriptForDestination(pmn->pubkey.GetID());
-        //}
-
+        newWinner.payee = GetScriptForDestination(pmn->pubkey.GetID());
         payeeSource = GetScriptForDestination(pmn->pubkey.GetID());
     }
 
     //if we can't find new MN to get paid, pick first active MN counting back from the end of vecLastPayments list
     if(newWinner.nBlockHeight == 0 && nMinimumAge > 0)
     {
-        LOCK(cs_vNodes);
-        BOOST_FOREACH(CNode* pnode, vNodes){
-            if(pnode->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
-                LogPrintf(" Capable peers found (Masternode relay) \n");
-                fNodeisCapable = true;
-            } else {
-                LogPrintf(" Cannot relay with peers (Masternode relay) \n");
-                fNodeisCapable = false;
-                break;
-            }
-        }
-
-        if(!fNodeisCapable) return false;
-
         LogPrintf(" Find by reverse \n");
 
         BOOST_REVERSE_FOREACH(CTxIn& vinLP, vecLastPayments)
@@ -297,10 +300,6 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
             CMasternode* pmn = mnodeman.Find(vinLP);
             if(pmn != NULL)
             {
-                if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY) {
-                    fNodeisCapable = false;
-                    break;
-                }
                 pmn->Check();
                 if(!pmn->IsEnabled()) continue;
 
@@ -321,8 +320,6 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         }
     }
 
-    if(!fNodeisCapable) return false;
-
     if(newWinner.nBlockHeight == 0) return false;
 
     CTxDestination address1;
@@ -334,7 +331,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     CCampusCashAddress address4(address3);
 
     if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY){
-        LogPrintf("Masternode-Payments::ProcessBlock - WARNING - Skipping winner relay, peer: %d is unable to handle such requests!\n", pmn->protocolVersion);
+        LogPrintf("Masternode-Payments::ProcessBlock - ERROR - Fatal Error!\n", pmn->protocolVersion);
         return false;
     }
 
