@@ -354,6 +354,14 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
         }
     }
 
+    if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+        if(pindexBest->GetBlockTime() < (MASTERNODE_TIER_2_START + 800)) {
+            // Reset diff for fork (Tier 2 Masternode integration
+            fDryRun = true;
+            return;
+        }
+    }
+
     // Test Fork
     if (nLiveForkToggle != 0) {
         // Do nothing
@@ -517,7 +525,9 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     }
 
     if(fMNtier2()) {
-        nSubsidy += 118 * COIN;
+        if(nHeight > MASTERNODE_TIER_2_START) {
+            nSubsidy += 118 * COIN;
+        }
     }
 
     if(pindexBest->GetBlockTime() < 1596304801) {
@@ -579,7 +589,9 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     if(fMNtier2()) {
-        nSubsidy += 118 * COIN;
+        if(pindexBest->nHeight > MASTERNODE_TIER_2_START) {
+            nSubsidy += 118 * COIN;
+        }
     }
 
     if(pindexPrev->nHeight+1 > nReservePhaseStart) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
@@ -610,7 +622,9 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
         ret2 = 42 * COIN; // 42 CCASH
 
         if(fMNtier2()) {
-            ret2 += 118 * COIN;
+            if(nHeight > MASTERNODE_TIER_2_START) {
+                ret2 += 118 * COIN;
+            }
         }
     }
 
