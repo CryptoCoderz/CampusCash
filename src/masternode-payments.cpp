@@ -366,7 +366,7 @@ void CMasternodePayments::Relay(CMasternodePaymentWinner& winner)
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes){
         if(NodeisCapable()) { // Only send to capable nodes
-            pnode->PushMessage("inv", vInv);
+            //pnode->PushMessage("inv", vInv);
         }
     }
 }
