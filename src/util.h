@@ -144,6 +144,8 @@ extern bool fLogTimestamps;
 extern volatile bool fReopenDebugLog;
 //Live fork toggle
 extern std::string strLiveForkToggle;
+//Roll back to block
+extern std::string strRollbackToBlock;
 extern int64_t nLiveForkToggle;
 //MasterNode recipient verification delay base time
 extern int64_t nMasterNodeChecksDelayBaseTime;

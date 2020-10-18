@@ -354,16 +354,8 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
         }
     }
 
-    if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
-        if(pindexBest->GetBlockTime() < (MASTERNODE_TIER_2_START + 800)) {
-            // Reset diff for fork (Tier 2 Masternode integration
-            fDryRun = true;
-            return;
-        }
-    }
-
-    if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_UPGRADE) {
-        if(pindexBest->GetBlockTime() < (MASTERNODE_TIER_2_UPGRADE + 800)) {
+    if(pindexBest->GetBlockTime() > 1602504000) {
+        if(pindexBest->GetBlockTime() < 1602504800) {
             // Reset diff for fork (Tier 2 Masternode integration
             fDryRun = true;
             return;
@@ -533,7 +525,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     }
 
     if(fMNtier2()) {
-        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_UPGRADE) {
+        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
             nSubsidy += 118 * COIN;
         }
     }
@@ -597,7 +589,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     if(fMNtier2()) {
-        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_UPGRADE) {
+        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
             nSubsidy += 118 * COIN;
         }
     }
@@ -630,7 +622,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
         ret2 = 42 * COIN; // 42 CCASH
 
         if(fMNtier2()) {
-            if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_UPGRADE) {
+            if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
                 ret2 += 118 * COIN;
             }
         }

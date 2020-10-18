@@ -76,7 +76,5 @@ static const int64_t MIN_MASTERNODE_BSC_RELAY = 62026; // ON
 
 // MasterNode Tier 2 payment start date
 static const int64_t MASTERNODE_TIER_2_START = 1602504000; // ON (Monday, October 12, 2020 5:00:00 AM GMT-07:00 PST)
-// MasterNode Tier 2 Upgrade
-static const int64_t MASTERNODE_TIER_2_UPGRADE = 1603324800; // ON (Thursday, October 22, 2020 12:00:00 AM GMT)
 
 #endif
