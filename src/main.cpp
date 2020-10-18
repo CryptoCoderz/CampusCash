@@ -2908,7 +2908,7 @@ bool CBlock::AcceptBlock()
 
     // Check proof-of-work or proof-of-stake
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake())) {
-        if(nHeight < 93153 && nHeight > 93175)
+        if(nHeight < 93153 || nHeight > 93175)
             return DoS(100, error("AcceptBlock() : incorrect %s", IsProofOfWork() ? "proof-of-work" : "proof-of-stake"));
     }
 
