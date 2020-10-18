@@ -30,7 +30,7 @@ static const int DATABASE_VERSION = 70509;
 //
 // network protocol versioning
 //
-static const int PROTOCOL_VERSION = 62030;
+static const int PROTOCOL_VERSION = 62031;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -57,7 +57,7 @@ static const int NOBLKS_VERSION_START = 0;
 static const int NOBLKS_VERSION_END = 62029;
 
 // hard cutoff time for legacy network connections
-static const int64_t HRD_LEGACY_CUTOFF = 1602504000; // ON (1602504000; Monday, October 12, 2020 12:00:00 PM GMT)
+static const int64_t HRD_LEGACY_CUTOFF = 1603324800; // ON (Thursday, October 22, 2020 12:00:00 AM)
 
 // hard cutoff time for future network connections
 static const int64_t HRD_FUTURE_CUTOFF = 9993058800; // OFF (NOT TOGGLED)
@@ -76,5 +76,7 @@ static const int64_t MIN_MASTERNODE_BSC_RELAY = 62026; // ON
 
 // MasterNode Tier 2 payment start date
 static const int64_t MASTERNODE_TIER_2_START = 1602504000; // ON (Monday, October 12, 2020 5:00:00 AM GMT-07:00 PST)
+// MasterNode Tier 2 Upgrade
+static const int64_t MASTERNODE_TIER_2_UPGRADE = 1603324800; // ON (Thursday, October 22, 2020 12:00:00 AM GMT)
 
 #endif
