@@ -525,7 +525,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     }
 
     if(fMNtier2()) {
-        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+        if(nHeight > MASTERNODE_TIER_2_START) {
             nSubsidy += 118 * COIN;
         }
     }
@@ -589,7 +589,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     if(fMNtier2()) {
-        if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+        if(pindexBest->nHeight > MASTERNODE_TIER_2_START) {
             nSubsidy += 118 * COIN;
         }
     }
@@ -622,7 +622,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
         ret2 = 42 * COIN; // 42 CCASH
 
         if(fMNtier2()) {
-            if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+            if(nHeight > MASTERNODE_TIER_2_START) {
                 ret2 += 118 * COIN;
             }
         }
