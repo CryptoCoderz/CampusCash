@@ -30,7 +30,7 @@ static const int DATABASE_VERSION = 70509;
 //
 // network protocol versioning
 //
-static const int PROTOCOL_VERSION = 62030;
+static const int PROTOCOL_VERSION = 62031;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -75,6 +75,6 @@ static const int64_t MIN_MASTERNODE_ADV_RELAY = 9993058800; // OFF (NOT TOGGLED)
 static const int64_t MIN_MASTERNODE_BSC_RELAY = 62026; // ON
 
 // MasterNode Tier 2 payment start date
-static const int64_t MASTERNODE_TIER_2_START = 1602504000; // ON (Monday, October 12, 2020 5:00:00 AM GMT-07:00 PST)
+static const int64_t MASTERNODE_TIER_2_START = 1603324800; // ON (Thursday, October 22, 2020 12:00:00 AM (GMT))
 
 #endif
