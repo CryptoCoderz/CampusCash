@@ -365,8 +365,8 @@ void CMasternodePayments::Relay(CMasternodePaymentWinner& winner)
     vInv.push_back(inv);
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes){
-        if(pnode->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
-            pnode->PushMessage("inv", vInv);
+        if(NodeisCapable()) { // Only send to capable nodes
+            //pnode->PushMessage("inv", vInv);
         }
     }
 }

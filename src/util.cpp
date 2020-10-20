@@ -108,6 +108,8 @@ volatile bool fReopenDebugLog = false;
 //Live fork toggle
 string strLiveForkToggle = "";
 int64_t nLiveForkToggle = 0;
+//Rollback to block
+string strRollbackToBlock = "";
 //MasterNode recipient verification delay base time
 int64_t nMasterNodeChecksDelayBaseTime = 0;
 //MasterNode peer IP advanced relay system toggle
@@ -1234,12 +1236,12 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "addnode=66.42.71.176\n");
                fprintf(ConfFile, "addnode=110.109.107.71:19427\n");
                fprintf(ConfFile, "addnode=110.109.107.71\n");
-               fprintf(ConfFile, "addnode=82.165.119.20:19427\n");
-               fprintf(ConfFile, "addnode=82.165.119.20\n");
-               fprintf(ConfFile, "addnode=82.165.115.26:19427\n");
-               fprintf(ConfFile, "addnode=82.165.115.26\n");
-               fprintf(ConfFile, "addnode=217.160.29.63:19427\n");
-               fprintf(ConfFile, "addnode=217.160.29.63\n");
+               //fprintf(ConfFile, "addnode=82.165.119.20:19427\n");
+               //fprintf(ConfFile, "addnode=82.165.119.20\n");
+               //fprintf(ConfFile, "addnode=82.165.115.26:19427\n");
+               //fprintf(ConfFile, "addnode=82.165.115.26\n");
+               //fprintf(ConfFile, "addnode=217.160.29.63:19427\n");
+               //fprintf(ConfFile, "addnode=217.160.29.63\n");
                fprintf(ConfFile, "addnode=138.197.161.183:19427\n");
                fprintf(ConfFile, "addnode=138.197.161.183\n");
                fprintf(ConfFile, "addnode=157.230.107.144:19427\n");
@@ -1250,6 +1252,12 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "addnode=184.166.67.221\n");
                fprintf(ConfFile, "addnode=167.99.88.37:19427\n");
                fprintf(ConfFile, "addnode=167.99.88.37\n");
+               fprintf(ConfFile, "addnode=152.89.106.95\n");
+               fprintf(ConfFile, "addnode=152.89.106.95:19427\n");
+               fprintf(ConfFile, "addnode=188.68.33.155\n");
+               fprintf(ConfFile, "addnode=188.68.33.155:19427\n");
+               fprintf(ConfFile, "addnode=5.45.108.38\n");
+               fprintf(ConfFile, "addnode=5.45.108.38:19427\n");
                fclose(ConfFile);
     }
 
