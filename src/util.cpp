@@ -13,6 +13,9 @@
 #include "netbase.h"
 #include "allocators.h"
 
+//TODO: Verify stability of inclusion
+#include "base58.h"
+
 #include <algorithm>
 
 
@@ -116,6 +119,9 @@ int64_t nMasterNodeChecksDelayBaseTime = 0;
 bool fMnAdvRelay = false;
 //MasterNode tier 2
 bool fMnT2 = false;
+bool fMnWnr = false;
+int64_t nMNpayBlockHeight = 0;
+CScript cMNpayee;
 
 // Init OpenSSL library multithreading support
 static CCriticalSection** ppmutexOpenSSL;

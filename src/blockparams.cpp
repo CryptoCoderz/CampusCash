@@ -489,10 +489,9 @@ bool fMNtier2()
         return false;
     }
     // Set TX values
-    CScript payee;
     CTxIn vin;
     //spork
-    if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
+    if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, vin)){
         LogPrintf("MasterNode Tier Payment Toggle : Found MasterNode winner!\n");
         if(fMnT2){
             LogPrintf("MasterNode Tier Found: Tier-2\n");

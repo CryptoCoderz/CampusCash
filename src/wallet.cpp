@@ -3053,9 +3053,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     // Set TX values
-    CScript payee;
     CScript devpayee;
-    CTxIn vin;
+    CTxIn vin;// TODO: Refactor in order to remove this like "payee" was
     nPoSageReward = nReward;
 
     // define address
@@ -3097,19 +3096,17 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     bool hasPayment = true;
     if(bMasterNodePayment) {
         // Try to get frist masternode in our list
-        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);// TODO: Refactor this, can be done away with
         // If initial sync or we can't find a masternode in our list
         if(winningNode){
             //spork
-            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, payee, vin)){
+            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, vin)){
                 LogPrintf("CreateCoinStake : Found relayed MasterNode winner!\n");
             } else {
                 LogPrintf("CreateCoinStake : WARNING : Could not find relayed Masternode winner!\n");
-                payee = GetScriptForDestination(devopaddress.Get());
             }
         } else {
             LogPrintf("CreateCoinStake : WARNING : No MasterNodes online to pay!\n");
-            payee = GetScriptForDestination(devopaddress.Get());
         }
     } else {
         hasPayment = false;
@@ -3119,11 +3116,11 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         payments = txNew.vout.size() + 1;
         txNew.vout.resize(payments);
 
-        txNew.vout[payments-1].scriptPubKey = payee;
+        txNew.vout[payments-1].scriptPubKey = cMNpayee;
         txNew.vout[payments-1].nValue = 0;
 
         CTxDestination address1;
-        ExtractDestination(payee, address1);
+        ExtractDestination(cMNpayee, address1);
         CCampusCashAddress address2(address1);
 
         LogPrintf("Masternode payment to %s\n", address2.ToString().c_str());

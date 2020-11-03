@@ -2542,10 +2542,9 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                     bool foundPayee = false;
                     bool foundPaymentAndPayee = false;
 
-                    CScript payee;
                     CTxIn vin;
-                    if(!masternodePayments.GetWinningMasternode(pindexBest->nHeight+1, payee, vin) || payee == CScript()){
-                        foundPayee = true; //doesn't require a specific payee
+                    if(!masternodePayments.GetWinningMasternode(pindexBest->nHeight+1, vin)){// TODO: This whole thing needs to be yanked out after below
+                        foundPayee = true; //doesn't require a specific payee                // after below section is engaged
                         foundPaymentAmount = true;
                         foundPaymentAndPayee = true;
                         if(fDebug) { LogPrintf("CheckBlock() : Using non-specific masternode payments %d\n", pindexBest->nHeight+1); }
@@ -2554,14 +2553,14 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                     for (unsigned int i = 0; i < vtx[1].vout.size(); i++) {
                         if(vtx[1].vout[i].nValue == masternodePaymentAmount )
                             foundPaymentAmount = true;
-                        if(vtx[1].vout[i].scriptPubKey == payee )
+                        if(vtx[1].vout[i].scriptPubKey == cMNpayee )
                             foundPayee = true;
-                        if(vtx[1].vout[i].nValue == masternodePaymentAmount && vtx[1].vout[i].scriptPubKey == payee)
+                        if(vtx[1].vout[i].nValue == masternodePaymentAmount && vtx[1].vout[i].scriptPubKey == cMNpayee)
                             foundPaymentAndPayee = true;
                     }
 
                     CTxDestination address1;
-                    ExtractDestination(payee, address1);
+                    ExtractDestination(cMNpayee, address1);
                     CCampusCashAddress address2(address1);
 
                     if(!foundPaymentAndPayee) {
@@ -3132,13 +3131,12 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
     // If initial sync or we can't find a masternode in our list
     if(!IsInitialBlockDownload() || winningNode){
 
-        CScript payee;
         CTxIn vin;
 
         // If we're in LiteMode disable mnengine features without disabling masternodes
         if (!fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate()){
 
-            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, payee, vin)){
+            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, vin)){
                 //UPDATE MASTERNODE LAST PAID TIME
                 CMasternode* pmn = mnodeman.Find(vin);
                 if(pmn != NULL) {
@@ -3153,7 +3151,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 
         } else if (fLiteMode && !fImporting && !fReindex && pindexBest->nHeight > Checkpoints::GetTotalBlocksEstimate())
         {
-            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, payee, vin)){
+            if(masternodePayments.GetWinningMasternode(pindexBest->nHeight, vin)){
                 //UPDATE MASTERNODE LAST PAID TIME
                 CMasternode* pmn = mnodeman.Find(vin);
                 if(pmn != NULL) {

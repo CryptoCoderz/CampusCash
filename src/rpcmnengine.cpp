@@ -474,11 +474,10 @@ Value masternode(const Array& params, bool fHelp)
 
         for(int nHeight = pindexBest->nHeight-10; nHeight < pindexBest->nHeight+20; nHeight++)
         {
-            CScript payee;
-            CTxIn vin;
-            if(masternodePayments.GetWinningMasternode(nHeight, payee, vin)){
+            CTxIn vin;// TODO: Refactor in order to remove this like "payee" was
+            if(masternodePayments.GetWinningMasternode(nHeight, vin)){
                 CTxDestination address1;
-                ExtractDestination(payee, address1);
+                ExtractDestination(cMNpayee, address1);
                 CCampusCashAddress address2(address1);
 
                 if(strMode == "addr")
