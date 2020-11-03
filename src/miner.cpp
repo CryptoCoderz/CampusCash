@@ -377,9 +377,8 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
                     // masternode/devops payment
                     bool hasPayment = true;
                     bool bMasterNodePayment = true;// TODO: Setup proper network toggle
-                    CScript mn_payee;
                     CScript do_payee;
-                    CTxIn vin;
+                    CTxIn vin;// TODO: Refactor in order to remove this like "payee" was
 
                     // Determine our payment address for devops
                     //
@@ -421,19 +420,17 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
 
                     if(bMasterNodePayment) {
                         // Try to get frist masternode in our list
-                        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
+                        CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);// TODO: Refactor this, can be done away with
                         // If initial sync or we can't find a masternode in our list
                         if(winningNode){
                             //spork
-                            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, mn_payee, vin)){
+                            if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, vin)){
                                 LogPrintf("CreateNewBlock(): Found relayed Masternode winner!\n");
                             } else {
                                 LogPrintf("CreateNewBlock(): WARNING: Could not find relayed Masternode winner!\n");
-                                mn_payee = do_payee;
                             }
                         } else {
                             LogPrintf("CreateNewBlock(): WARNING: No MasterNodes online to pay!\n");
-                            mn_payee = do_payee;
                         }
                     } else {
                         hasPayment = false;
@@ -445,7 +442,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
 
                     if (hasPayment) {
                         pblock->vtx[0].vout.resize(3);
-                        pblock->vtx[0].vout[1].scriptPubKey = mn_payee;
+                        pblock->vtx[0].vout[1].scriptPubKey = cMNpayee;
                         pblock->vtx[0].vout[1].nValue = masternodePayment;
                         pblock->vtx[0].vout[2].scriptPubKey = do_payee;
                         pblock->vtx[0].vout[2].nValue = devopsPayment;
@@ -454,7 +451,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
 
                     CTxDestination address1;
                     CTxDestination address3;
-                    ExtractDestination(mn_payee, address1);
+                    ExtractDestination(cMNpayee, address1);
                     ExtractDestination(do_payee, address3);
                     CBitcoinAddress address2(address1);
                     CBitcoinAddress address4(address3);

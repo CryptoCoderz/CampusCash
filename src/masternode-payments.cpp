@@ -86,9 +86,6 @@ void ProcessMessageMasternodePayments(CNode* pfrom, std::string& strCommand, CDa
 
         mapSeenMasternodeVotes.insert(make_pair(hash, winner));
 
-        if(masternodePayments.AddWinningMasternode(winner)){
-            masternodePayments.Relay(winner);
-        }
     }
 }
 
@@ -152,8 +149,19 @@ uint64_t CMasternodePayments::CalculateScore(uint256 blockHash, CTxIn& vin)
     return n4.Get64();
 }
 
-bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CScript& payee, CTxIn& vin)
+bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
 {
+    // Ensure exclusion of pointless looping
+    if(nMNpayBlockHeight == nBlockHeight){
+        if(fMnWnr){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // Set loop logging
+    nMNpayBlockHeight = nBlockHeight;
+    fMnWnr = false;
     // Try to get frist masternode in our list
     CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
     // If initial sync or we can't find a masternode in our list
@@ -163,7 +171,6 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CScript& payee,
     }
     // Set masternode winner to pay
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
-        payee = winner.payee;
         vin = winner.vin;
     }
     // Check Tier level of MasterNode winner
@@ -252,6 +259,10 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
 
+    CBitcoinAddress cbMNPayee;
+    cbMNPayee = CBitcoinAddress("Ce1XyENjUHHPBt8mxy2LupkH2PnequevMM");// devops address
+    cMNpayee = GetScriptForDestination(cbMNPayee.Get());
+
     uint256 hash;
     if(!GetBlockHash(hash, nBlockHeight)) return false;
     unsigned int nHash;
@@ -290,6 +301,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
         newWinner.payee = GetScriptForDestination(pmn->pubkey.GetID());
         payeeSource = GetScriptForDestination(pmn->pubkey.GetID());
+        cMNpayee = GetScriptForDestination(pmn->pubkey.GetID());
     }
 
     //if we can't find new MN to get paid, pick first active MN counting back from the end of vecLastPayments list
@@ -339,6 +351,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         LogPrintf("Signed winning masternode. \n");
         if(AddWinningMasternode(newWinner))
         {
+            fMnWnr = true;
             LogPrintf("Added winning masternode. \n");
 
             if(pmn->protocolVersion >= MIN_MASTERNODE_BSC_RELAY){
@@ -366,6 +379,11 @@ void CMasternodePayments::Relay(CMasternodePaymentWinner& winner)
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes){
         if(NodeisCapable()) { // Only send to capable nodes
+            // TODO: Fix Dash's old implementation, this is just sad.
+            // First figure out why RelayMasternode bans MNs and then get the
+            // Relay properly functional. None of this half ass shit which seems
+            // to be the damn standard.
+            //
             //pnode->PushMessage("inv", vInv);
         }
     }
