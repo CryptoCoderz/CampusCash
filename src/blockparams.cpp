@@ -364,7 +364,10 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
 
     // Test Fork
     if (nLiveForkToggle != 0) {
-        // Do nothing
+      if (pindexBest->nHeight == nLiveForkToggle) {
+        fDryRun = true;
+        return;
+      }
     }// TODO setup next testing fork
 
     // Standard, non-Dry Run
