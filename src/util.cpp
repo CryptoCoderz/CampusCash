@@ -122,6 +122,8 @@ bool fMnT2 = false;
 bool fMnWnr = false;
 int64_t nMNpayBlockHeight = 0;
 CScript cMNpayee;
+//Max Blockheight Value
+int maxBlockHeight = -1;
 
 // Init OpenSSL library multithreading support
 static CCriticalSection** ppmutexOpenSSL;
