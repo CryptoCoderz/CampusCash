@@ -152,6 +152,8 @@ uint64_t CMasternodePayments::CalculateScore(uint256 blockHash, CTxIn& vin)
 bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
 {
     // Ensure exclusion of pointless looping
+    //
+    // TODO: Move this to block params after verification
     if(nMNpayBlockHeight == nBlockHeight){
         if(fMnWnr){
             return true;
@@ -162,11 +164,10 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
     // Set loop logging
     nMNpayBlockHeight = nBlockHeight;
     fMnWnr = false;
-    // Try to get frist masternode in our list
-    CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
     // If initial sync or we can't find a masternode in our list
-    if(IsInitialBlockDownload() || !winningNode || !ProcessBlock(nBlockHeight)){
+    if(IsInitialBlockDownload() || !ProcessBlock(nBlockHeight)){
         // Return false (for sanity, we have no masternode to pay)
+        LogPrintf(" GetWinningMasternode()) - ProcessBlock failed (OR) Still syncing... \n");
         return false;
     }
     // Set masternode winner to pay
@@ -239,6 +240,7 @@ bool CMasternodePayments::NodeisCapable()
         if(pnode->nVersion >= MIN_MASTERNODE_BSC_RELAY) {
             LogPrintf(" NodeisCapable() - Capable peers found (Masternode relay) \n");
             fNodeisCapable = true;
+            break;
         } else {
             LogPrintf(" NodeisCapable() - Cannot relay with peers (Masternode relay) \n");
             fNodeisCapable = false;
@@ -268,6 +270,14 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     unsigned int nHash;
     memcpy(&nHash, &hash, 2);
 
+    // For now just get the current highest ranking MasterNode
+    // and relay that (if capable)
+    CMasternode *pmn = mnodeman.GetCurrentMasterNode(1);
+    if(pmn == NULL) {
+        LogPrintf("Masternode-Payments::ProcessBlock - FAILED - No masternodes detected...\n");
+        return false;
+    }
+
     LogPrintf(" Masternode-Payments::ProcessBlock - Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString().c_str());
 
     // TODO: Rewrite masternode winner sync/logging
@@ -282,9 +292,6 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     // pay to the oldest MN that still had no payment but its input is old enough and it was active long enough
     //CMasternode *pmn = mnodeman.FindOldestNotInVec(vecLastPayments, nMinimumAge);
     //
-    // For now just get the current highest ranking MasterNode
-    // and relay that (if capable)
-    CMasternode *pmn = mnodeman.GetCurrentMasterNode(1);
 
     if(pmn->protocolVersion < MIN_MASTERNODE_BSC_RELAY) {
         LogPrintf("Masternode-Payments::ProcessBlock - WARNING - Capability issue, masternode: %d is unable to handle relay requests!\n", pmn->protocolVersion);
@@ -293,7 +300,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
     if(pmn != NULL)
     {
-        LogPrintf("  Found MasterNode winner to pay\n");//Found by FindOldestNotInVec
+        LogPrintf("Masternode-Payments::ProcessBlock - Found MasterNode winner to pay\n");//Found by FindOldestNotInVec
 
         newWinner.score = 0;
         newWinner.nBlockHeight = nBlockHeight;
