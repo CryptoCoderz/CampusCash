@@ -364,10 +364,10 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
 
     // Test Fork
     if (nLiveForkToggle != 0) {
-      if (pindexBest->nHeight == nLiveForkToggle) {
-        fDryRun = true;
-        return;
-      }
+        if (pindexBest->nHeight == nLiveForkToggle) {
+            fDryRun = true;
+            return;
+        }
     }// TODO setup next testing fork
 
     // Standard, non-Dry Run
@@ -483,14 +483,12 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 bool fMNtier2()
 {
-    // Try to get frist masternode in our list
-    CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
-    // If initial sync or we can't find a masternode in our list
-    if(IsInitialBlockDownload() || !winningNode){
-        // Return false (for sanity, we have no masternode to pay)
-        LogPrintf("MasterNode Tier Payment Toggle : Either still syncing or no masternodes found\n");
-        return false;
-    }
+    // Ensure exclusion of pointless looping
+    //if(nMNpayBlockHeight == pindexPrev->nHeight+1){
+    //    LogPrintf("MasterNode Tier Payment Toggle : Already ran for this block, skipping...\n");
+    //    return fMNtier2();
+    //}
+
     // Set TX values
     CTxIn vin;
     //spork
@@ -527,7 +525,9 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     }
 
     if(fMNtier2()) {
+        LogPrintf("GetProofOfWorkReward : Tier 2 rewards was selected\n");
         if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+            LogPrintf("GetProofOfWorkReward : Tier 2 rewards was set\n");
             nSubsidy += 118 * COIN;
         }
     }
