@@ -22,7 +22,7 @@ static const int64_t nBlockRewardReserve_2 = 300000 * COIN;
 /** Standard block subsidy */
 static const int64_t nBlockStandardReward = 125 * COIN; // Tier 2 will create it's own nStandardReward
 /** Fork height for Secondary Reserve block subsidy */
-static const int64_t nBlockReserveHeight_2 = 999999; // Turned OFF at this time, TODO: turn on!
+static const int64_t nBlockReserveHeight_2 = 160000; // Turned ON at this time, SET: Block 160,000
 /** Block spacing preferred */
 static const int64_t BLOCK_SPACING = (1 * 60); // One Minute
 /** Block spacing minimum */
