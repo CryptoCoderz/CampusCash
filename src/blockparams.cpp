@@ -647,5 +647,11 @@ int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
       ret2 += 16 * COIN;
     }
 
+    if(pindexPrev->nHeight+1 > (nBlockRewardReserve_2 + nBlockStandardReward)) { // If, all 100 blocks of the premine isn't done, then next blocks have premine value
+        if(pindexBest->nMoneySupply < ((nBlockRewardReserve_2 + nBlockStandardReward) * 100)) {
+            ret2 = nBlockRewardReserve_2 + nBlockStandardReward;
+        }
+    }
+
     return ret2;
 }
