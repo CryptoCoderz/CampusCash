@@ -17,6 +17,8 @@ static const unsigned int nModifierInterval = 2 * 60;
 static const int64_t nGenesisBlockReward = 1 * COIN;
 /** Reserve block subsidy */
 static const int64_t nBlockRewardReserve = 2000000 * COIN; // premine 200,000,000 CCASH
+/** Second Reserve block subsidy **/
+static const int64_t nBlockRewardReserve_2 = 300000 *COIN;
 /** Standard block subsidy */
 static const int64_t nBlockStandardReward = 125 * COIN; // Tier 2 will create it's own nStandardReward
 /** Block spacing preferred */
