@@ -242,11 +242,11 @@ public:
     /// Is the inputs associated with this public key? (and there is 1000000 CCASH - checking if valid masternode)
     bool IsVinTier2(CTxIn& vin);
     /// Set the private/public key values, returns true if successful
-    bool SetKey(std::string strSecret, std::string& errorMessage, CKey& key, CPubKey& pubkey);
+    bool SetKey(const std::string &strSecret, std::string& errorMessage, CKey& key, CPubKey& pubkey);
     /// Sign the message, returns true if successful
-    bool SignMessage(std::string strMessage, std::string& errorMessage, std::vector<unsigned char>& vchSig, CKey key);
+    bool SignMessage(const std::string &strMessage, std::string& errorMessage, std::vector<unsigned char>& vchSig, CKey key);
     /// Verify the message, returns true if succcessful
-    bool VerifyMessage(CPubKey pubkey, std::vector<unsigned char>& vchSig, std::string strMessage, std::string& errorMessage);
+    bool VerifyMessage(CPubKey pubkey, std::vector<unsigned char>& vchSig, const std::string &strMessage, std::string& errorMessage);
 };
 
 /** Used to keep track of current status of MNengine pool
@@ -356,7 +356,7 @@ public:
         minBlockSpacing = minBlockSpacingIn;
     }
 
-    bool SetCollateralAddress(std::string strAddress);
+    bool SetCollateralAddress(const std::string strAddress);
     void Reset();
     void SetNull();
 
@@ -476,8 +476,8 @@ public:
     void RelaySignaturesAnon(std::vector<CTxIn>& vin);
     void RelayInAnon(std::vector<CTxIn>& vin, std::vector<CTxOut>& vout);
     void RelayIn(const std::vector<CTxDSIn>& vin, const int64_t& nAmount, const CTransaction& txCollateral, const std::vector<CTxDSOut>& vout);
-    void RelayStatus(const int sessionID, const int newState, const int newEntriesCount, const int newAccepted, const std::string error="");
-    void RelayCompletedTransaction(const int sessionID, const bool error, const std::string errorMessage);
+    void RelayStatus(const int sessionID, const int newState, const int newEntriesCount, const int newAccepted, const std::string &error="");
+    void RelayCompletedTransaction(const int sessionID, const bool error, const std::string &errorMessage);
 };
 
 void ThreadCheckMNenginePool();
