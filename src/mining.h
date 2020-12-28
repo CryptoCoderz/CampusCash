@@ -18,11 +18,11 @@ static const int64_t nGenesisBlockReward = 1 * COIN;
 /** Reserve block subsidy */
 static const int64_t nBlockRewardReserve = 2000000 * COIN; // premine 200,000,000 CCASH
 /** Second Reserve block subsidy **/
-static const int64_t nBlockRewardReserve_2 = 178530 * COIN;
+static const int64_t nBlockRewardReserve_2 = 300000 * COIN;
 /** Standard block subsidy */
 static const int64_t nBlockStandardReward = 125 * COIN; // Tier 2 will create it's own nStandardReward
 /** Fork height for Secondary Reserve block subsidy */
-static const int64_t nBlockReserveHeight_2 = 180000; // Turned ON at this time, SET: Block 180000
+static const int64_t nBlockReserveHeight_2 = 178525; // Turned ON at this time, SET: Block 180000
 /** Block spacing preferred */
 static const int64_t BLOCK_SPACING = (1 * 60); // One Minute
 /** Block spacing minimum */
