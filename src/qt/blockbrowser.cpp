@@ -154,7 +154,7 @@ int blocksInPastHours(int hours)
     return 0;
 }
 
-double getTxTotalValue(const std::string &txid)
+double getTxTotalValue(std::string txid)
 {
     uint256 hash;
     hash.SetHex(txid);
@@ -185,7 +185,7 @@ double convertCoins(int64_t amount)
     return (double)amount / (double)COIN;
 }
 
-std::string getOutputs(const std::string &txid)
+std::string getOutputs(std::string txid)
 {
     uint256 hash;
     hash.SetHex(txid);
@@ -220,7 +220,7 @@ std::string getOutputs(const std::string &txid)
     return str;
 }
 
-std::string getInputs(const std::string &txid)
+std::string getInputs(std::string txid)
 {
     uint256 hash;
     hash.SetHex(txid);
@@ -279,10 +279,11 @@ int64_t getInputValue(CTransaction tx, CScript target)
     return 0;
 }
 
-double getTxFees(const std::string &txid)
+double getTxFees(std::string txid)
 {
     uint256 hash;
     hash.SetHex(txid);
+
 
     CTransaction tx;
     uint256 hashBlock = 0;

@@ -3534,7 +3534,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 extern map<uint256, CAlert> mapAlerts;
 extern CCriticalSection cs_mapAlerts;
 
-string GetWarnings(const std::string strFor)
+string GetWarnings(string strFor)
 {
     int nPriority = 0;
     string strStatusBar;
