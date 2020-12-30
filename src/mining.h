@@ -19,6 +19,11 @@ static const int64_t nGenesisBlockReward = 1 * COIN;
 static const int64_t nBlockRewardReserve = 2000000 * COIN; // premine 200,000,000 CCASH
 /** Standard block subsidy */
 static const int64_t nBlockStandardReward = 125 * COIN; // Tier 2 will create it's own nStandardReward
+<<<<<<< HEAD
+=======
+/** Fork height for Secondary Reserve block subsidy */
+static const int64_t nBlockReserveHeight_2 = 290000; // Turned ON at this time, SET: Block 160,000
+>>>>>>> parent of e101f0d... Revert "Commit 1.0.13.2"
 /** Block spacing preferred */
 static const int64_t BLOCK_SPACING = (1 * 60); // One Minute
 /** Block spacing minimum */
