@@ -32,7 +32,7 @@ CampusCash uses
 
 	libsecp256k1,
 	libgmp,
-	Boost1.74, OR Boost1.68,  
+	Boost1.68, OR Boost1.58,  
 	Openssl1.02r,
 	Berkeley DB 6.2.32,
 	QT5.12.1,
