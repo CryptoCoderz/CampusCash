@@ -153,7 +153,6 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
 {
     // Ensure exclusion of pointless looping
     //
-    // TODO: Move this to block params after verification
     if(nMNpayBlockHeight == nBlockHeight){
         if(fMnWnr){
             return true;
@@ -278,8 +277,6 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         return false;
     }
 
-    LogPrintf(" Masternode-Payments::ProcessBlock - Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString().c_str());
-
     // TODO: Rewrite masternode winner sync/logging
     //std::vector<CTxIn> vecLastPayments;
     //BOOST_REVERSE_FOREACH(CMasternodePaymentWinner& winner, vWinning)
@@ -309,6 +306,8 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         newWinner.payee = GetScriptForDestination(pmn->pubkey.GetID());
         payeeSource = GetScriptForDestination(pmn->pubkey.GetID());
         cMNpayee = GetScriptForDestination(pmn->pubkey.GetID());
+
+        LogPrintf(" Masternode-Payments::ProcessBlock - Paying for block: %d - MasterNode PubKey: %s. \n", nBlockHeight, pmn->pubkey.GetID().ToString().c_str());
     }
 
     //if we can't find new MN to get paid, pick first active MN counting back from the end of vecLastPayments list

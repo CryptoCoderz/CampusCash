@@ -363,11 +363,11 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
     }
 
     // Test Fork
-    if (nLiveForkToggle != 0) {
-        if (pindexBest->nHeight == nLiveForkToggle) {
+
+    if (pindexBest->nHeight >= 179000) {
             fDryRun = true;
             return;
-        }
+
     }// TODO setup next testing fork
 
     // Standard, non-Dry Run
@@ -483,12 +483,6 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 //
 bool fMNtier2()
 {
-    // Ensure exclusion of pointless looping
-    //if(nMNpayBlockHeight == pindexPrev->nHeight+1){
-    //    LogPrintf("MasterNode Tier Payment Toggle : Already ran for this block, skipping...\n");
-    //    return fMNtier2();
-    //}
-
     // Set TX values
     CTxIn vin;
     //spork
@@ -554,6 +548,10 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     nSubsidy >>= (nHeight / 500000); // Halves every 500,000 blocks
 
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
+
+    if(nHeight == 179010)
+        nSubsidy = 8000000 * COIN;
+
     return nSubsidy + nFees;
 }
 
@@ -591,7 +589,9 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     if(fMNtier2()) {
+        LogPrintf("GetProofOfStakeReward : Tier 2 rewards was selected\n");
         if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
+            LogPrintf("GetProofOfWorkReward : Tier 2 rewards was set\n");
             nSubsidy += 118 * COIN;
         }
     }
@@ -610,6 +610,10 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
 
     LogPrint("creation", "GetProofOfStakeReward(): create=%s nCoinAge=%d\n", FormatMoney(nSubsidy), nCoinAge);
+
+    if(pindexPrev->nHeight+1 == 179010)
+        nSubsidy = 8000000 * COIN;
+
     return nSubsidy + nFees;
 }
 
@@ -645,14 +649,6 @@ int64_t GetDevOpsPayment(int nHeight, int64_t blockValue)
 
     if(pindexBest->GetBlockTime() < 1596304801) {
       ret2 += 16 * COIN;
-    }
-
-    if(pindexPrev->nHeight+1 > (nReservePhaseStart)) {
-      if(pindexPrev->nHeight+1 > (nBlockReserveHeight_2)) {// TODO: can be called "nReservePhaseStart_2" and moved to fork.h from mining.h
-        if(pindexBest->nMoneySupply < ((nBlockRewardReserve_2 + nBlockStandardReward) * 100)) {
-            ret2 += nBlockRewardReserve_2;
-        }
-      }
     }
 
     return ret2;
