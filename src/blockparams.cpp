@@ -437,27 +437,26 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 // Coin base subsidy
 //
 //
-// Reward calculations for 25-years of CCASH emissions
-// 10 Billion Total     | 8 Billion Premine
-// 100% Remaining CCASH   : 2,000,000,000
+// Reward calculations for CCASH emissions
+// 4 Billion Total     | 200 Million Premine
+// 100% Remaining CCASH   : 3,800,000,000
 // ----------------------------------
-// Block numbers based on 2-minute blocktime average
-// (Not including initial 250 starting blocks)
-// Blocks per day       :     720
-// Blocks per month     :  21,600
-// Blocks per year      : 262,800
+// Block numbers based on 1-minute blocktime average
+// (Not including initial 100 starting blocks)
+// Blocks per day       : (1* 60) * 24 = 1,440
+// Blocks per month     : 1,440 * 30.436875 = 43,829.1 = [43,829]
+// Blocks per year      : 525,949.2 = [525,949]
 // ----------------------------------
-// 100% for Calculations: 720 blocks per day
-// Payout per block     : 300 CCASH
-// Payout per day       : 300 * ((1 * 60 * 60) / (2 * 60) * 24)                   =       216,000 CCASH
-// Payout per month     : 300 * (((1 * 60 * 60) / (2 * 60) * 24) * 30)            =     6,480,000 CCASH
-// Payout per year      : 300 * (((1 * 60 * 60) / (2 * 60) * 24) * 365)           =    78,840,000 CCASH
-// Mineout              : 300 * (25.36 * (((1 * 60 * 60) / (2 * 60) * 24) * 365)) = 2,000,000,000 CCASH
+// 100% for Calculations: 1,440 blocks per day
+// Payout per block     : 125 CCASH
+// Payout per day       : 125 * ((1 * 60 * 60) / (1 * 60) * 24)                                             =  180,000 CCASH
+// Payout per month     : 125 * (((1 * 60 * 60) / (1 * 60) * 24) * 30) || 180,000 * 30.436875               =  5,478,637.5 CCASH
+// Payout per year      : 125 * (((1 * 60 * 60) / (1 * 60) * 24) * 365) || 5,478,637.5 * 12                 =  65,743,650 CCASH
 // ----------------------------------
 // (Network Allocation) (BLOCKS | 25-Years of minting)
-// Singular Payout      : 150-->50 CCASH
-// Maternode Payout     : 100-->200 CCASH
-// DevOps Payout        : 50 CCASH
+// Singular Payout      : 125-->70.5 CCASH
+// Maternode Payout     : 54.5-->42 CCASH
+// DevOps Payout        : 12.5 CCASH
 // ----------------------------------
 // (PLEASE NOTE)
 // Masternode Payout is calculated based on the assumption of starting payout date of Masternode Payout and
@@ -467,16 +466,8 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 // This is the same for DevOps payout, it is assumed for its calculations that it starts with Masternode
 // Payouts.
 // ----------------------------------
-// (Masternode | Network) SeeSaw
-// Increment step       : 20% step
-// Interval             : 30 blocks
-// Step per Interval    : 1 (20% step per interval)
-// Steps per swing      : 5 Steps up or down 
-// Epoch (SeeSaw finish): 15 Intervals
-// Upswing Duration     : 5 Intervals
-// Downswing Duration   : 5 Intervals
-// Idle Duration        : 5 Intervals (no adjustment)
-//
+
+// Will Correct Mathematics when Tier 2 Masternodes come online.
 
 //
 // Masternode Tier 2 Payout Toggle
