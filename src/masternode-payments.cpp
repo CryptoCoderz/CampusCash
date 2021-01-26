@@ -153,6 +153,7 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
 {
     // Ensure exclusion of pointless looping
     //
+    LogPrintf(" GetWinningMasternode() - Loop check... \n");
     if(nMNpayBlockHeight == nBlockHeight){
         if(fMnWnr){
             return true;
@@ -160,22 +161,29 @@ bool CMasternodePayments::GetWinningMasternode(int nBlockHeight, CTxIn& vin)
             return false;
         }
     }
+    LogPrintf(" GetWinningMasternode() - Not looped yet, setting loop logging \n");
     // Set loop logging
     nMNpayBlockHeight = nBlockHeight;
     fMnWnr = false;
+    LogPrintf(" GetWinningMasternode() - success! loop logging set \n");
     // If initial sync or we can't find a masternode in our list
     if(IsInitialBlockDownload() || !ProcessBlock(nBlockHeight)){
         // Return false (for sanity, we have no masternode to pay)
-        LogPrintf(" GetWinningMasternode()) - ProcessBlock failed (OR) Still syncing... \n");
+        LogPrintf(" GetWinningMasternode() - ProcessBlock failed (OR) Still syncing... \n");
         return false;
     }
+    LogPrintf(" GetWinningMasternode() - success! ProcessBlock passed \n");
     // Set masternode winner to pay
+    LogPrintf(" GetWinningMasternode() - Setting MasterNode winner... \n");
     BOOST_FOREACH(CMasternodePaymentWinner& winner, vWinning){
         vin = winner.vin;
     }
+    LogPrintf(" GetWinningMasternode() - success! Winner set \n");
     // Check Tier level of MasterNode winner
+    LogPrintf(" GetWinningMasternode() - Checking for Tier type... \n");
     fMnT2 = mnEngineSigner.IsVinTier2(vin);
     // Return true if previous checks pass
+    LogPrintf(" GetWinningMasternode() - success! Tier type found \n");
     return true;
 }
 
@@ -251,6 +259,14 @@ bool CMasternodePayments::NodeisCapable()
 
 bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 {
+    // For now just get the current highest ranking MasterNode
+    // and relay that (if capable)
+    CMasternode* pmn = mnodeman.GetCurrentMasterNode(1);
+    if(!pmn) {
+        LogPrintf("Masternode-Payments::ProcessBlock - FAILED - No masternodes detected...\n");
+        return false;
+    }
+
     LOCK(cs_masternodepayments);
 
     if(nBlockHeight <= 10) return false;//Superficial, checked in "GetWinningMasternode"
@@ -268,14 +284,6 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     if(!GetBlockHash(hash, nBlockHeight)) return false;
     unsigned int nHash;
     memcpy(&nHash, &hash, 2);
-
-    // For now just get the current highest ranking MasterNode
-    // and relay that (if capable)
-    CMasternode *pmn = mnodeman.GetCurrentMasterNode(1);
-    if(pmn == NULL) {
-        LogPrintf("Masternode-Payments::ProcessBlock - FAILED - No masternodes detected...\n");
-        return false;
-    }
 
     // TODO: Rewrite masternode winner sync/logging
     //std::vector<CTxIn> vecLastPayments;

@@ -364,7 +364,7 @@ void VRX_Dry_Run(const CBlockIndex* pindexLast)
 
     // Test Fork
 
-    if (pindexBest->nHeight >= 179000) {
+    if (pindexLast->nHeight > 119447) {
             fDryRun = true;
             return;
 
@@ -485,8 +485,9 @@ bool fMNtier2()
 {
     // Set TX values
     CTxIn vin;
+    LogPrintf("MasterNode Tier Search: Started looking for Tier type \n");
     //spork
-    if(masternodePayments.GetWinningMasternode(pindexPrev->nHeight+1, vin)){
+    if(masternodePayments.GetWinningMasternode(pindexBest->nHeight+1, vin)){
         LogPrintf("MasterNode Tier Payment Toggle : Found MasterNode winner!\n");
         if(fMnT2){
             LogPrintf("MasterNode Tier Found: Tier-2\n");
@@ -512,12 +513,13 @@ bool fMNtier2()
 //
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
+    LogPrintf("GetProofOfWorkReward: Setting base values \n");
     int64_t nSubsidy = 83 * COIN;
 
     if(pindexBest->GetBlockTime() > 1596024000) {
             nSubsidy = nBlockStandardReward;
     }
-
+    LogPrintf("GetProofOfWorkReward: success! base values set \n");
     if(fMNtier2()) {
         LogPrintf("GetProofOfWorkReward : Tier 2 rewards was selected\n");
         if(pindexBest->GetBlockTime() > MASTERNODE_TIER_2_START) {
@@ -525,6 +527,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
             nSubsidy += 118 * COIN;
         }
     }
+    LogPrintf("GetProofOfWorkReward: success! tier2 checked \n");
 
     if(pindexBest->GetBlockTime() < 1596304801) {
       nSubsidy += 160 * COIN;
@@ -549,7 +552,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
 
-    if(nHeight == 179010)
+    if(nHeight == 119449)
         nSubsidy = 8000000 * COIN;
 
     return nSubsidy + nFees;
